@@ -1,5 +1,6 @@
 {
   "data_type": "uint32",
+  "mesh": "mesh",
   "num_channels": 1,
   "scales": [
     {

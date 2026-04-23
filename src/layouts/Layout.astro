@@ -5,6 +5,7 @@ interface Props {
 }
 
 const { title, description = "A general method for bootstrapping dense 3D segmentations from sparse 2D annotations" } = Astro.props;
+const base = import.meta.env.BASE_URL;
 ---
 
 <!doctype html>
@@ -19,16 +20,16 @@ const { title, description = "A general method for bootstrapping dense 3D segmen
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://sparsity.github.io" />
-    <meta property="og:image" content="/header.png" />
+    <meta property="og:url" content="https://ucsdmanorlab.github.io/sparsity/" />
+    <meta property="og:image" content={`${base}/fig2a_pipeline.png`} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="/header.png" />
+    <meta name="twitter:image" content={`${base}/fig2a_pipeline.png`} />
 
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext y='20' font-size='22'%3E%F0%9F%A7%A9%3C/text%3E%3C/svg%3E" />
   </head>
   <body>
     <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode"></button>
@@ -37,16 +38,18 @@ const { title, description = "A general method for bootstrapping dense 3D segmen
       const toggle = document.getElementById('theme-toggle');
       const html = document.documentElement;
       const saved = localStorage.getItem('theme');
-      if (saved) html.setAttribute('data-theme', saved);
+      // Default to light unless the user has explicitly chosen dark before.
+      const initial = saved === 'dark' ? 'dark' : 'light';
+      if (initial === 'light') html.setAttribute('data-theme', 'light');
       function updateIcon() {
         toggle.textContent = html.getAttribute('data-theme') === 'light' ? '\u263E' : '\u2600';
       }
       updateIcon();
       toggle.addEventListener('click', () => {
         const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        html.setAttribute('data-theme', next === 'dark' ? '' : next);
         if (next === 'dark') html.removeAttribute('data-theme');
-        localStorage.setItem('theme', next === 'dark' ? '' : next);
+        else html.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', next);
         updateIcon();
       });
     </script>

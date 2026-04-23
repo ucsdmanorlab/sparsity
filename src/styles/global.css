@@ -513,26 +513,34 @@ figure.no-frame img {
 }
 
 /*
- * Dark-mode-friendly figure inversion.
+ * In dark mode, invert grayscale components (black text/lines → white)
+ * while preserving saturated colors (segmentation panels). The
+ * `invert(1) hue-rotate(180deg)` trick works on pure math:
+ *   - Black (0,0,0) → (1,1,1) white, hue-rotate a nop on grayscale
+ *   - Pure red (1,0,0) → cyan (0,1,1) → rotate 180° → red (1,0,0)
+ *   - Transparent alpha is untouched by filter ops
+ * So text gets readable, colored panels keep their meaning.
  *
- * Source images have white/light backgrounds (standard Keynote/paper exports).
- * In dark mode (default), CSS invert(1) + hue-rotate(180deg) converts:
- *   - white backgrounds → black
- *   - black text/lines/borders → white
- *   - saturated colors → approximately preserved (hue-rotate compensates)
- *
- * Light mode shows the original images unfiltered.
+ * In light mode, we show the original PNG unfiltered.
  */
-figure img {
-  filter: invert(1) hue-rotate(180deg);
+figure img,
+figure video {
+  filter: invert(1) hue-rotate(180deg) saturate(1.2);
 }
 
-figure.no-invert img {
-  filter: none;
+figure.no-invert img,
+figure.no-invert video {
+  filter: saturate(1.2);
 }
 
-[data-theme="light"] figure img {
-  filter: none;
+[data-theme="light"] figure img,
+[data-theme="light"] figure video {
+  filter: saturate(1.2);
+}
+
+[data-theme="light"] figure.no-invert img,
+[data-theme="light"] figure.no-invert video {
+  filter: saturate(1.2);
 }
 
 /* Image grid */
