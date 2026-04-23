@@ -11,35 +11,48 @@ from cloudvolume import CloudVolume
 SRC = Path("/Users/vijay/work/test_vols/website_vols")
 DST = Path("/Users/vijay/work/sparsity/sparsity.github.io/public/data")
 
-# (src_zarr, array_name, dest_dataset, dest_layer, layer_type)
+# Each job: dict with required keys (src_zarr, name, dst_ds, dst_layer, layer_type)
+# and optional (crop_roi_from, mask_from, y_crop_start) passed to convert().
+def _j(src_zarr, name, dst_ds, dst_layer, layer_type, **extras):
+    return dict(src_zarr=src_zarr, name=name, dst_ds=dst_ds,
+                dst_layer=dst_layer, layer_type=layer_type, **extras)
+
+# HARRIS: every array cropped to dense_labels' ROI; segmentation layers
+# (3D baseline, 10-min bootstrap) additionally masked by dense_labels_mask.
+HARRIS_CROP = {"crop_roi_from": "voljo.zarr/dense_labels"}
+HARRIS_CROP_MASK = {**HARRIS_CROP, "mask_from": "voljo.zarr/dense_labels_mask"}
+
+# EPI: drop first 95 y voxels across every array.
+EPI_YCROP = {"y_crop_start": 95}
+
 JOBS = [
-    # HARRIS-15 (voljo.zarr -> harris_15)
-    ("voljo.zarr", "raw",              "harris_15", "raw",              "image"),
-    ("voljo.zarr", "3d_dense",         "harris_15", "3d_baseline",      "segmentation"),
-    ("voljo.zarr", "dense_labels",     "harris_15", "gt_labels",        "segmentation"),
-    ("voljo.zarr", "sparse_2d_labels", "harris_15", "sparse_labels",    "segmentation"),
-    ("voljo.zarr", "10min_paint_2d",   "harris_15", "segmentation",     "segmentation"),
-    # EPI
-    ("epi.zarr", "raw",                "epi", "raw",                "image"),
-    ("epi.zarr", "labels_dense",       "epi", "gt",                 "segmentation"),
-    ("epi.zarr", "labels_dense1z",     "epi", "gt_1section",        "segmentation"),
-    ("epi.zarr", "seg_dense",          "epi", "seg_dense",          "segmentation"),
-    ("epi.zarr", "seg_dense1z",        "epi", "seg_dense_1section", "segmentation"),
-    ("epi.zarr", "seg_sparsesam",      "epi", "seg_sparsesam",      "segmentation"),
-    ("epi.zarr", "useg_EE",            "epi", "useg_EE",            "segmentation"),
-    ("epi.zarr", "simple_thresh_ws_f", "epi", "thresh_ws",          "segmentation"),
+    # HARRIS-15 (voljo.zarr -> harris_15) — cropped to dense_labels ROI
+    _j("voljo.zarr", "raw",              "harris_15", "raw",           "image",        **HARRIS_CROP),
+    _j("voljo.zarr", "3d_dense",         "harris_15", "3d_baseline",   "segmentation", **HARRIS_CROP_MASK),
+    _j("voljo.zarr", "dense_labels",     "harris_15", "gt_labels",     "segmentation", **HARRIS_CROP),
+    _j("voljo.zarr", "sparse_2d_labels", "harris_15", "sparse_labels", "segmentation", **HARRIS_CROP),
+    _j("voljo.zarr", "10min_paint_2d",   "harris_15", "segmentation",  "segmentation", **HARRIS_CROP_MASK),
+    # EPI — drop first 95 y voxels on every array
+    _j("epi.zarr", "raw",                "epi", "raw",                "image",        **EPI_YCROP),
+    _j("epi.zarr", "labels_dense",       "epi", "gt",                 "segmentation", **EPI_YCROP),
+    _j("epi.zarr", "labels_dense1z",     "epi", "gt_1section",        "segmentation", **EPI_YCROP),
+    _j("epi.zarr", "seg_dense",          "epi", "seg_dense",          "segmentation", **EPI_YCROP),
+    _j("epi.zarr", "seg_dense1z",        "epi", "seg_dense_1section", "segmentation", **EPI_YCROP),
+    _j("epi.zarr", "seg_sparsesam",      "epi", "seg_sparsesam",      "segmentation", **EPI_YCROP),
+    _j("epi.zarr", "useg_EE",            "epi", "useg_EE",            "segmentation", **EPI_YCROP),
+    _j("epi.zarr", "simple_thresh_ws_f", "epi", "thresh_ws",          "segmentation", **EPI_YCROP),
     # LICONN
-    ("liconn.zarr", "raw",               "liconn", "raw",     "image"),
-    ("liconn.zarr", "labels_relabeled",  "liconn", "gt",      "segmentation"),
-    ("liconn.zarr", "sparse_labels",     "liconn", "sparse",  "segmentation"),
-    ("liconn.zarr", "seg",               "liconn", "seg",     "segmentation"),
+    _j("liconn.zarr", "raw",              "liconn", "raw",    "image"),
+    _j("liconn.zarr", "labels_relabeled", "liconn", "gt",     "segmentation"),
+    _j("liconn.zarr", "sparse_labels",    "liconn", "sparse", "segmentation"),
+    _j("liconn.zarr", "seg",              "liconn", "seg",    "segmentation"),
     # Synthetic — three batches (60001 / 60004 / 60007)
-    *[item for batch in ("batch_60001", "batch_60004", "batch_60007") for item in [
-        (f"synthetic/{batch}.zarr", "labels",            "synthetic", f"{batch}/labels",            "segmentation"),
-        (f"synthetic/{batch}.zarr", "obfuscated_labels", "synthetic", f"{batch}/obfuscated_labels", "segmentation"),
-        (f"synthetic/{batch}.zarr", "input_lsds",        "synthetic", f"{batch}/input_lsds",        "image"),
-        (f"synthetic/{batch}.zarr", "gt_affs",           "synthetic", f"{batch}/gt_affs",           "image"),
-        (f"synthetic/{batch}.zarr", "pred_affs",         "synthetic", f"{batch}/pred_affs",         "image"),
+    *[j for batch in ("batch_60001", "batch_60004", "batch_60007") for j in [
+        _j(f"synthetic/{batch}.zarr", "labels",            "synthetic", f"{batch}/labels",            "segmentation"),
+        _j(f"synthetic/{batch}.zarr", "obfuscated_labels", "synthetic", f"{batch}/obfuscated_labels", "segmentation"),
+        _j(f"synthetic/{batch}.zarr", "input_lsds",        "synthetic", f"{batch}/input_lsds",        "image"),
+        _j(f"synthetic/{batch}.zarr", "gt_affs",           "synthetic", f"{batch}/gt_affs",           "image"),
+        _j(f"synthetic/{batch}.zarr", "pred_affs",         "synthetic", f"{batch}/pred_affs",         "image"),
     ]],
 ]
 
@@ -55,13 +68,63 @@ def pick_chunk_size(volume_size, block_multiple=None):
     return chunks
 
 
-def convert(src_zarr, name, dst_ds, dst_layer, layer_type):
-    arr = zarr.open(str(SRC / src_zarr / name), mode="r")
-    attrs = dict(arr.attrs)
-    vox_zyx = list(attrs.get("voxel_size", [1, 1, 1]))
-    offset_zyx = list(attrs.get("offset", [0, 0, 0]))
+def _load_zarr_with_attrs(path):
+    a = zarr.open(str(path), mode="r")
+    attrs = dict(a.attrs)
+    return a, list(attrs.get("voxel_size", [1, 1, 1])), list(attrs.get("offset", [0, 0, 0]))
+
+
+def _crop_to_roi(data, vox_zyx, offset_zyx, roi_offset_zyx, roi_shape_zyx, roi_vox_zyx):
+    """Crop a (z,y,x) array to the world-space ROI of another array (same
+    voxel size assumed). Returns (cropped_data, new_offset_zyx).
+    """
+    assert tuple(vox_zyx) == tuple(roi_vox_zyx), "ROI crop assumes matched voxel sizes"
+    roi_world_start = roi_offset_zyx
+    roi_world_end = [roi_offset_zyx[i] + roi_shape_zyx[i] * roi_vox_zyx[i] for i in range(3)]
+    # Compute crop indices local to `data` (z,y,x order)
+    start_vox = [max(0, int(round((roi_world_start[i] - offset_zyx[i]) / vox_zyx[i]))) for i in range(3)]
+    end_vox   = [min(data.shape[i], int(round((roi_world_end[i] - offset_zyx[i]) / vox_zyx[i]))) for i in range(3)]
+    sl = tuple(slice(start_vox[i], end_vox[i]) for i in range(3))
+    new_offset = [offset_zyx[i] + start_vox[i] * vox_zyx[i] for i in range(3)]
+    return data[sl], new_offset
+
+
+def convert(src_zarr, name, dst_ds, dst_layer, layer_type,
+            crop_roi_from=None, mask_from=None, y_crop_start=None):
+    """
+    crop_roi_from: optional "path/within/SRC" of a zarr whose offset+shape
+        defines the world-space ROI to crop `data` to.
+    mask_from: optional "path/within/SRC" of a binary mask; applied after crop.
+        Where mask == 0, output is zeroed.
+    y_crop_start: optional int — drop the first N voxels along the y axis
+        (axis 1 in zarr-native zyx layout).
+    """
+    arr, vox_zyx, offset_zyx = _load_zarr_with_attrs(SRC / src_zarr / name)
 
     data = arr[:]
+
+    # Crop to another array's world ROI (HARRIS: dense_labels ROI)
+    if crop_roi_from is not None and data.ndim == 3:
+        roi_a, roi_vox, roi_off = _load_zarr_with_attrs(SRC / crop_roi_from)
+        data, offset_zyx = _crop_to_roi(data, vox_zyx, offset_zyx,
+                                        roi_off, list(roi_a.shape), roi_vox)
+
+    # Simple y-axis crop (EPI: drop first N y voxels)
+    if y_crop_start is not None and data.ndim == 3 and y_crop_start > 0:
+        data = data[:, y_crop_start:, :]
+        offset_zyx = [offset_zyx[0], offset_zyx[1] + y_crop_start * vox_zyx[1], offset_zyx[2]]
+
+    # Apply a binary mask (HARRIS: dense_labels_mask)
+    if mask_from is not None and data.ndim == 3:
+        mask_a, mask_vox, mask_off = _load_zarr_with_attrs(SRC / mask_from)
+        mask_data = mask_a[:]
+        # Align mask to `data`'s current ROI (same voxel size assumed)
+        assert tuple(mask_vox) == tuple(vox_zyx), "mask must share voxel size"
+        mstart = [int(round((offset_zyx[i] - mask_off[i]) / mask_vox[i])) for i in range(3)]
+        mend = [mstart[i] + data.shape[i] for i in range(3)]
+        mask_data = mask_data[mstart[0]:mend[0], mstart[1]:mend[1], mstart[2]:mend[2]]
+        assert mask_data.shape == data.shape, f"mask shape {mask_data.shape} != data {data.shape}"
+        data = np.where(mask_data > 0, data, 0)
 
     if data.ndim == 4:
         # (c, z, y, x)
@@ -156,7 +219,7 @@ def build_epi_sparse_sam_union():
     locs = ["location_107_168_200", "location_270_393_167", "location_392_322_119"]
     label_offset = 0
     for loc in locs:
-        a = zarr.open(str(SRC / "epi.zarr" / "training_crops_raw" / loc / "labels"), mode="r")
+        a = zarr.open(str(SRC / "epi_crops" / loc / "labels"), mode="r")
         arr = a[:]  # (1, y, x)
         offset_zyx = list(a.attrs.get("offset", [0, 0, 0]))
         # Add per-location label offset so the three arrays don't collide
@@ -172,6 +235,8 @@ def build_epi_sparse_sam_union():
             out[z:z+dz, y:y+dy, x:x+dx],
         )
 
+    # Crop y[95:] to match the rest of the EPI volume set.
+    out = out[:, 95:, :]
     # Transpose (z,y,x) -> (x,y,z) for precomputed
     data_tr = np.ascontiguousarray(out.transpose(2, 1, 0))
     volume_size = list(data_tr.shape)
@@ -185,7 +250,7 @@ def build_epi_sparse_sam_union():
         data_type="uint64",
         encoding="compressed_segmentation",
         resolution=[1, 1, 1],
-        voxel_offset=[0, 0, 0],
+        voxel_offset=[0, 95, 0],  # matches y-cropped EPI volumes
         volume_size=volume_size,
         chunk_size=chunk_size,
     )
@@ -199,7 +264,7 @@ def build_epi_sparse_sam_union():
 def main():
     for job in JOBS:
         try:
-            convert(*job)
+            convert(**job)
         except Exception as e:
             print(f"FAILED {job}: {type(e).__name__}: {e}")
             raise
