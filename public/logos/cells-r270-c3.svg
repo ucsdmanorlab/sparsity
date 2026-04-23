@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Sparsity logo">
+  <title>Sparsity — rot270°, colors c3</title>
+  <defs><clipPath id="c08r270c3"><rect x="4" y="4" width="56" height="56" rx="14"/></clipPath></defs>
+  <g clip-path="url(#c08r270c3)">
+    <g transform="rotate(270 32 32)">
+      <path d="M34 30 C14 18 10 40 4 34 L4 4 L30 4 C20 14 20 24 34 30 Z" fill="#80c51c"/>
+      <path d="M34 30 C20 24 20 14 30 4 L60 4 L60 28 C52 40 44 16 34 30 Z" fill="#ff2f92"/>
+      <path d="M34 30 C44 16 52 40 60 28 L60 60 L38 60 C52 50 40 40 34 30 Z" fill="#14b8ac"/>
+      <path d="M34 30 C40 40 52 50 38 60 L4 60 L4 34 C10 40 14 18 34 30 Z" fill="#e8c012"/>
+    </g>
+  </g>
+</svg>

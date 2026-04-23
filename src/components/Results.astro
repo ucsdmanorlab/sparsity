@@ -8,7 +8,7 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <h3>Dense 3D segmentations from sparse 2D annotations</h3>
 
-  <p>We validated the 2D&rarr;3D method across six publicly available datasets: HARRIS-15<a href="#ref-1" class="cite"><sup>1</sup></a>, FIB-25<a href="#ref-2" class="cite"><sup>2</sup></a>, CREMI-A/B/C<a href="#ref-3" class="cite"><sup>3</sup></a>, and EPI<a href="#ref-4" class="cite"><sup>4</sup></a>. Each dataset contains two dense ground-truth volumes. We systematically varied annotation density from single objects to dense labels.</p>
+  <p>We validated the 2D&rarr;3D method across six publicly available datasets: HARRIS-15<a href="#ref-6" class="cite"><sup>6</sup></a>, FIB-25<a href="#ref-7" class="cite"><sup>7</sup></a>, CREMI-A/B/C<a href="#ref-8" class="cite"><sup>8</sup></a>, and EPI<a href="#ref-9" class="cite"><sup>9</sup></a>. Each dataset contains two dense ground-truth volumes. We systematically varied annotation density from single objects to dense labels.</p>
 
   <p>Across all datasets, ten minutes of non-expert sparse annotation on a single section was sufficient to generate a dense 3D segmentation comparable in quality to one based on expert annotation requiring 1,000&times; more time.</p>
 
@@ -40,11 +40,11 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
   <p>We tested the 2D&rarr;3D method on five additional publicly available datasets spanning distinct imaging modalities, biological structures, and segmentation tasks. Across all five, the pipeline produced visually coherent 3D segmentations from minimal annotation effort.</p>
 
   <ul>
-    <li><strong>LICONN</strong><a href="#ref-5" class="cite"><sup>5</sup></a>: Expansion-microscopy volumes of mouse somatosensory cortex (~10 &times; 10 &times; 20 nm effective voxel size). 10 minutes of SAM-assisted sparse annotation on a few sections for boundary segmentation.</li>
-    <li><strong>PRISM</strong><a href="#ref-6" class="cite"><sup>6</sup></a>: 18-channel light microscopy of mouse hippocampus (35 &times; 35 &times; 80 nm). Ten sections of manual ground-truth annotation for boundary segmentation.</li>
-    <li><strong>CREMI-C</strong><a href="#ref-3" class="cite"><sup>3</sup></a>: Serial-section TEM of <em>Drosophila</em> neuropil through an axon tract (4 &times; 4 &times; 40 nm). Two sections of manual annotation for synaptic cleft segmentation.</li>
-    <li><strong>MitoEM-H</strong><a href="#ref-7" class="cite"><sup>7</sup></a>: Multi-beam SEM of human cortex (8 &times; 8 &times; 30 nm). Two sections of manual annotation for mitochondria instance segmentation.</li>
-    <li><strong>Fluo-C2DL-Huh7</strong><a href="#ref-8" class="cite"><sup>8</sup></a>: Live cell laser confocal imaging of Huh7 hepatocarcinoma cells (0.65 &times; 0.65 &mu;m pixel size). Two frames of manual annotation for 2D+t cell segmentation.</li>
+    <li><strong>LICONN</strong><a href="#ref-10" class="cite"><sup>10</sup></a>: Expansion-microscopy volumes of mouse somatosensory cortex (effective voxel size ~10 &times; 10 &times; 20 nm, x &times; y &times; z). 10 minutes of SAM<a href="#ref-2" class="cite"><sup>2</sup></a>-assisted sparse annotation on a few sections for boundary segmentation.</li>
+    <li><strong>PRISM</strong><a href="#ref-11" class="cite"><sup>11</sup></a>: 18-channel light microscopy of mouse hippocampus (voxel size 35 &times; 35 &times; 80 nm, x &times; y &times; z). Ten sections of manual ground-truth annotation for boundary segmentation.</li>
+    <li><strong>CREMI-C</strong><a href="#ref-8" class="cite"><sup>8</sup></a>: Serial-section TEM of <em>Drosophila</em> neuropil through an axon tract (voxel size 4 &times; 4 &times; 40 nm, x &times; y &times; z). Two sections of manual annotation for synaptic cleft segmentation.</li>
+    <li><strong>MitoEM-H</strong><a href="#ref-12" class="cite"><sup>12</sup></a>: Multi-beam SEM of human cortex (voxel size 8 &times; 8 &times; 30 nm, x &times; y &times; z). Two sections of manual annotation for mitochondria instance segmentation.</li>
+    <li><strong>Fluo-C2DL-Huh7</strong><a href="#ref-13" class="cite"><sup>13</sup></a>: Live cell laser confocal imaging of Huh7 hepatocarcinoma cells (pixel size 0.65 &times; 0.65 &mu;m, x &times; y). Two frames of manual annotation for 2D+t cell segmentation.</li>
   </ul>
 
   <figure>
@@ -61,7 +61,7 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <h3>Comparison with existing tools</h3>
 
-  <p>To contextualize the method against existing general-purpose segmentation tools, we compared it with Cellpose + uSegment3D<a href="#ref-9" class="cite"><sup>9</sup></a><sup>,</sup><a href="#ref-10" class="cite"><sup>10</sup></a> on the EPI dataset. Cellpose was applied to all 540 images of the EPI test volume, and uSegment3D was used to merge the 2D segmentations into a 3D consensus segmentation. For the 2D&rarr;3D method, we evaluated three levels of supervision: dense ground-truth labels, a single densely labelled section, and sparse SAM-generated labels on 3 images in 5 minutes of human time. The 2D&rarr;3D method with sparse SAM labels achieved a usable segmentation from 5 minutes of human effort, approximately two orders of magnitude less annotation for a modest decrease in segmentation accuracy.</p>
+  <p>To contextualize the method against existing general-purpose segmentation tools, we compared it with Cellpose + uSegment3D<a href="#ref-5" class="cite"><sup>5</sup></a><sup>,</sup><a href="#ref-14" class="cite"><sup>14</sup></a> on the EPI dataset. Cellpose was applied to all 540 images of the EPI test volume, and uSegment3D was used to merge the 2D segmentations into a 3D consensus segmentation. For the 2D&rarr;3D method, we evaluated three levels of supervision: dense ground-truth labels, a single densely labelled section, and sparse SAM-generated labels on 3 images in 5 minutes of human time. The 2D&rarr;3D method with sparse SAM labels achieved a usable segmentation from 5 minutes of human effort, approximately two orders of magnitude less annotation for a modest decrease in segmentation accuracy.</p>
 
   <figure>
     <img src={`${base}/fig_epi_comparison.png`} alt="Comparison of 2D to 3D segmentation with Cellpose + uSegment3D on the EPI dataset. Representative XY sections and 3D mesh renderings, plus quantitative comparison of labelled voxels/objects/images, annotation time, and normalized VOI." />

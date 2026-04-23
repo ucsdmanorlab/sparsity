@@ -16,3 +16,5 @@ dist/
 
 # local settings not needed in repo
 .claude/
+
+scripts/__pycache__/
