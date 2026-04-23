@@ -1,0 +1,69 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import TLDR from '../components/TLDR.astro';
+import Motivation from '../components/Motivation.astro';
+import Results from '../components/Results.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Code from '../components/Code.astro';
+import Takeaways from '../components/Takeaways.astro';
+import Acknowledgements from '../components/Acknowledgements.astro';
+import References from '../components/References.astro';
+---
+
+<Layout title="Sparsity — Bootstrapping Dense 3D Segmentations from Sparse 2D Annotations">
+  <Hero />
+
+  <div class="page-layout">
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <h3>Contents</h3>
+        <ul>
+          <li><a href="#tldr">TL;DR</a></li>
+          <li><a href="#motivation">Motivation</a></li>
+          <li><a href="#results">Results</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#code">Get Started</a></li>
+          <li><a href="#takeaways">Takeaways</a></li>
+          <li><a href="#acknowledgements">Acknowledgements</a></li>
+          <li><a href="#references">References</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <TLDR />
+      <Motivation />
+      <Results />
+      <HowItWorks />
+      <Code />
+      <Takeaways />
+      <Acknowledgements />
+      <References />
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Thiyagarajan, Sheridan, Harris, Manor</p>
+    </div>
+  </footer>
+</Layout>
+
+<script>
+  // Highlight active sidebar link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        const activeLink = document.querySelector(`.sidebar-nav a[href="#${entry.target.id}"]`);
+        if (activeLink) activeLink.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(section => observer.observe(section));
+</script>

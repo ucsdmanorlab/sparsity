@@ -1,0 +1,58 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "A general method for bootstrapping dense 3D segmentations from sparse 2D annotations" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://sparsity.github.io" />
+    <meta property="og:image" content="/header.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="/header.png" />
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
+  </head>
+  <body>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode"></button>
+    <slot />
+    <script is:inline>
+      const toggle = document.getElementById('theme-toggle');
+      const html = document.documentElement;
+      const saved = localStorage.getItem('theme');
+      if (saved) html.setAttribute('data-theme', saved);
+      function updateIcon() {
+        toggle.textContent = html.getAttribute('data-theme') === 'light' ? '\u263E' : '\u2600';
+      }
+      updateIcon();
+      toggle.addEventListener('click', () => {
+        const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', next === 'dark' ? '' : next);
+        if (next === 'dark') html.removeAttribute('data-theme');
+        localStorage.setItem('theme', next === 'dark' ? '' : next);
+        updateIcon();
+      });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

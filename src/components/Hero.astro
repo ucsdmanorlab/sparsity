@@ -1,0 +1,37 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+<!-- Hero / Header -->
+<header class="hero">
+  <figure class="hero-gif no-frame" style="margin-bottom: 0;">
+    <img src={`${base}/header.gif`} alt="2D->3D bootstrapping on CREMI A"
+         style="width: 100%; max-height: 1080px; object-fit: contain; border-radius: 6px;" />
+  </figure>
+
+  <h1>Bootstrapping Dense 3D Segmentations from Sparse 2D Annotations</h1>
+
+  <div class="authors">
+    <div class="author">
+      <a class="name" href="https://scholar.google.com/citations?user=RbHkzpgAAAAJ" target="_blank" rel="noopener">Vijay Venu Thiyagarajan</a>
+      <div class="affiliation">UT Austin</div>
+    </div>
+    <div class="author">
+      <a class="name" href="https://scholar.google.com/citations?user=MTh-g8YAAAAJ" target="_blank" rel="noopener">Arlo Sheridan</a>
+      <div class="affiliation">Salk Institute</div>
+    </div>
+    <div class="author">
+      <a class="name" href="https://scholar.google.com/citations?user=8P7Ymn4AAAAJ" target="_blank" rel="noopener">Kristen M. Harris</a>
+      <div class="affiliation">UT Austin</div>
+    </div>
+    <div class="author">
+      <a class="name" href="https://scholar.google.com/citations?user=_ZLy6tEAAAAJ" target="_blank" rel="noopener">Uri Manor</a>
+      <div class="affiliation">UCSD / Salk Institute</div>
+    </div>
+  </div>
+
+  <div class="links">
+    <a href="https://www.biorxiv.org/content/10.1101/2024.06.14.599135v2" target="_blank" rel="noopener">Paper</a>
+    <a href="https://github.com/ucsdmanorlab/bootstrapper" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://github.com/ucsdmanorlab/napari-bootstrapper" target="_blank" rel="noopener">Napari Plugin</a>
+  </div>
+</header>

@@ -1,0 +1,22 @@
+---
+---
+
+<section id="takeaways">
+  <h2>Takeaways</h2>
+
+  <ul>
+    <li>A general-purpose method for generating dense 3D segmentations from sparse 2D annotations. It works across imaging modalities, biological targets, and segmentation tasks without domain-specific pretraining or high-performance computing.</li>
+    <li>Specialist 3D models trained on dense ground-truth achieve the highest accuracy within their domain. This method does not replace them. It addresses the bottleneck that precedes them: generating the dense training data needed for both model development and evaluation.</li>
+    <li>In our experiments, bootstrapped 3D models trained on unproofread pseudo ground-truth approached the quality of models trained on dense expert annotations, with orders-of-magnitude less human effort.</li>
+  </ul>
+
+  <h3>Complementary to foundation models</h3>
+
+  <p>The pipeline is complementary to segmentation foundation models. SAM, microSAM, or CellSAM outputs serve directly as sparse input labels for the 2D&rarr;3D framework. As 2D foundation models improve, so does every segmentation bootstrapped through them, with no changes to the pipeline itself.</p>
+
+  <h3>Toward autonomous bootstrapping</h3>
+
+  <p>The bootstrapper CLI is fully scriptable. AI agents can independently orchestrate the entire bootstrapping loop: selecting annotations, training models, running inference, evaluating results, and iterating. This paradigm, where agents explore multiple analysis paths in parallel and retain those that meet quality thresholds, could dramatically accelerate ground-truth generation across many volumes simultaneously.</p>
+
+  <p>Dense voxel ground-truth remains the gold standard for 3D microscopy segmentation. This method accelerates convergence to that standard by reducing the total cost of generating training data. For laboratories with limited resources, it transforms an intractable annotation problem into a manageable one.</p>
+</section>

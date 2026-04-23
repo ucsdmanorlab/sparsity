@@ -1,0 +1,178 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+
+<section id="results">
+  <h2>Results</h2>
+
+  <h3>Dense 3D segmentations from sparse 2D annotations</h3>
+
+  <p>We validated the 2D&rarr;3D method across six publicly available datasets: HARRIS-15<a href="#ref-1" class="cite"><sup>1</sup></a>, FIB-25<a href="#ref-2" class="cite"><sup>2</sup></a>, CREMI-A/B/C<a href="#ref-3" class="cite"><sup>3</sup></a>, and EPI<a href="#ref-4" class="cite"><sup>4</sup></a>. Each dataset contains two dense ground-truth volumes. We systematically varied annotation density from single objects to dense labels.</p>
+
+  <p>Across all datasets, ten minutes of non-expert sparse annotation on a single section was sufficient to generate a dense 3D segmentation comparable in quality to one based on expert annotation requiring 1,000&times; more time.</p>
+
+  <div class="image-grid cols-2">
+    <figure>
+      <img src={`${base}/fig1b_sparse_annos.png`} alt="Example sparse, non-expert annotations created in 30 minutes for HARRIS-15, partitioned into three 10-minute subsets." />
+      <figcaption><strong>Fig. 1b.</strong> Example sparse, non-expert annotations created in 30 minutes for HARRIS-15. Annotations were partitioned into three approximately 10-minute subsets to assess the effect of annotation time on segmentation quality.</figcaption>
+    </figure>
+    <figure>
+      <img src={`${base}/fig1c_comparison.png`} alt="Orthogonal views comparing 2D to 3D result with 10 minutes of sparse annotation, 3D Baseline result with all dense annotations, and ground-truth." />
+      <figcaption><strong>Fig. 1c.</strong> Orthogonal views comparing the 2D&rarr;3D result with 10 minutes of sparse annotation, the 3D Baseline result with all dense annotations, and ground-truth. Total time to segmentation includes human annotation time and machine time (training + inference + post-processing).</figcaption>
+    </figure>
+  </div>
+
+  <!-- Neuroglancer: Bootstrapped HARRIS-15 Segmentation (4-column layout with sub-rows) -->
+  <div class="viewer-link-container">
+    <a class="viewer-link" href="https://neuroglancer-demo.appspot.com/#!%7B%22dimensions%22%3A%7B%22x%22%3A%5B8e-09%2C%22m%22%5D%2C%22y%22%3A%5B8e-09%2C%22m%22%5D%2C%22z%22%3A%5B5.0000000000000004e-08%2C%22m%22%5D%7D%2C%22position%22%3A%5B1062%2C1181%2C95%5D%2C%22layers%22%3A%5B%7B%22type%22%3A%22image%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fharris_15%2Fraw%22%2C%22name%22%3A%22Image%22%7D%2C%7B%22type%22%3A%22segmentation%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fharris_15%2Fgt_labels%22%2C%22name%22%3A%22Ground%20Truth%20labels%22%7D%2C%7B%22type%22%3A%22segmentation%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fharris_15%2Fsparse_labels%22%2C%22name%22%3A%2230%20min%202D%20sparse%20labels%22%7D%2C%7B%22type%22%3A%22segmentation%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fharris_15%2F3d_baseline%22%2C%22name%22%3A%223D%20Baseline%22%7D%2C%7B%22type%22%3A%22segmentation%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fharris_15%2Fsegmentation%22%2C%22name%22%3A%2210%20min%202D%5Cu21923D%20bootstrap%22%7D%5D%2C%22layout%22%3A%7B%22type%22%3A%22row%22%2C%22children%22%3A%5B%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%5D%2C%22layout%22%3A%22xy%22%7D%2C%7B%22type%22%3A%22column%22%2C%22children%22%3A%5B%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%2C%22Ground%20Truth%20labels%22%5D%2C%22layout%22%3A%22xy%22%7D%2C%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%2C%2230%20min%202D%20sparse%20labels%22%5D%2C%22layout%22%3A%22xy%22%7D%5D%7D%2C%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%2C%223D%20Baseline%22%5D%2C%22layout%22%3A%22xy%22%7D%2C%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%2C%2210%20min%202D%5Cu21923D%20bootstrap%22%5D%2C%22layout%22%3A%22xy%22%7D%5D%7D%2C%22crossSectionScale%22%3A3.54%7D" target="_blank" rel="noopener">
+      Launch Interactive Viewer: Bootstrapped HARRIS-15 Segmentation
+    </a>
+  </div>
+
+  <figure>
+    <img src={`${base}/fig1d_voi_ablation.png`} alt="Deviation of normalized VOI sum across six datasets relative to the 3D baseline, plotted against annotation budget." />
+    <figcaption><strong>Fig. 1d.</strong> Deviation of normalized Variation of Information (VOI) sum across six datasets (total ground-truth path lengths in parentheses) relative to the 3D Baseline trained on all dense annotations. Approximate manual annotation times are marked for the HARRIS-15 dataset. Across all amounts and datasets, the VOI scores consistently approached those of the 3D baselines.</figcaption>
+  </figure>
+
+  <h3>Generalization across imaging modalities and segmentation tasks</h3>
+
+  <p>We tested the 2D&rarr;3D method on five additional publicly available datasets spanning distinct imaging modalities, biological structures, and segmentation tasks. Across all five, the pipeline produced visually coherent 3D segmentations from minimal annotation effort.</p>
+
+  <ul>
+    <li><strong>LICONN</strong><a href="#ref-5" class="cite"><sup>5</sup></a>: Expansion-microscopy volumes of mouse somatosensory cortex (~10 &times; 10 &times; 20 nm effective voxel size). 10 minutes of SAM-assisted sparse annotation on a few sections for boundary segmentation.</li>
+    <li><strong>PRISM</strong><a href="#ref-6" class="cite"><sup>6</sup></a>: 18-channel light microscopy of mouse hippocampus (35 &times; 35 &times; 80 nm). Ten sections of manual ground-truth annotation for boundary segmentation.</li>
+    <li><strong>CREMI-C</strong><a href="#ref-3" class="cite"><sup>3</sup></a>: Serial-section TEM of <em>Drosophila</em> neuropil through an axon tract (4 &times; 4 &times; 40 nm). Two sections of manual annotation for synaptic cleft segmentation.</li>
+    <li><strong>MitoEM-H</strong><a href="#ref-7" class="cite"><sup>7</sup></a>: Multi-beam SEM of human cortex (8 &times; 8 &times; 30 nm). Two sections of manual annotation for mitochondria instance segmentation.</li>
+    <li><strong>Fluo-C2DL-Huh7</strong><a href="#ref-8" class="cite"><sup>8</sup></a>: Live cell laser confocal imaging of Huh7 hepatocarcinoma cells (0.65 &times; 0.65 &mu;m pixel size). Two frames of manual annotation for 2D+t cell segmentation.</li>
+  </ul>
+
+  <figure>
+    <img src={`${base}/fig4_generalization.png`} alt="The 2D to 3D method generalizes across imaging modalities and segmentation tasks. Five datasets with representative 2D images, published ground-truth, published 3D meshes, 2D to 3D segmentation results, and 2D to 3D meshes." />
+    <figcaption><strong>Fig. 4.</strong> The 2D&rarr;3D method generalizes across imaging modalities and segmentation tasks. Five datasets spanning distinct imaging modalities, biological targets, and annotation strategies. Each row displays: a representative 2D image (col 1), the published proofread, manual, or ground-truth segmentation (col 2), the published 3D mesh (col 3), our 2D&rarr;3D segmentation result (col 4), and our 2D&rarr;3D mesh (col 5). Datasets: <strong>a</strong> LICONN, <strong>b</strong> PRISM, <strong>c</strong> CREMI-C, <strong>d</strong> MitoEM-H, <strong>e</strong> Fluo-C2DL-Huh7.</figcaption>
+  </figure>
+
+  <!-- Neuroglancer: LICONN (3-column layout with sub-rows) -->
+  <div class="viewer-link-container">
+    <a class="viewer-link" href="https://neuroglancer-demo.appspot.com/#!%7B%22dimensions%22%3A%7B%22x%22%3A%5B1.8000000000000002e-08%2C%22m%22%5D%2C%22y%22%3A%5B1.8000000000000002e-08%2C%22m%22%5D%2C%22z%22%3A%5B2.4000000000000003e-08%2C%22m%22%5D%7D%2C%22position%22%3A%5B1912%2C2435%2C619.5%5D%2C%22layers%22%3A%5B%7B%22type%22%3A%22image%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fliconn%2Fraw%22%2C%22name%22%3A%22Image%22%7D%2C%7B%22type%22%3A%22segmentation%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fliconn%2Fgt%22%2C%22name%22%3A%22Proofread%22%7D%2C%7B%22type%22%3A%22segmentation%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fliconn%2Fsparse%22%2C%22name%22%3A%22Sparse%20SAM%22%7D%2C%7B%22type%22%3A%22segmentation%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fliconn%2Fseg%22%2C%22name%22%3A%222D%5Cu21923D%20sparse%20SAM%22%7D%5D%2C%22layout%22%3A%7B%22type%22%3A%22row%22%2C%22children%22%3A%5B%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%5D%2C%22layout%22%3A%22xy%22%7D%2C%7B%22type%22%3A%22column%22%2C%22children%22%3A%5B%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%2C%22Proofread%22%5D%2C%22layout%22%3A%22xy%22%7D%2C%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%2C%22Sparse%20SAM%22%5D%2C%22layout%22%3A%22xy%22%7D%5D%7D%2C%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%2C%222D%5Cu21923D%20sparse%20SAM%22%5D%2C%22layout%22%3A%22xy%22%7D%5D%7D%2C%22crossSectionScale%22%3A1.85%7D" target="_blank" rel="noopener">
+      Launch Interactive Viewer: LICONN 2D&rarr;3D
+    </a>
+  </div>
+
+  <h3>Comparison with existing tools</h3>
+
+  <p>To contextualize the method against existing general-purpose segmentation tools, we compared it with Cellpose + uSegment3D<a href="#ref-9" class="cite"><sup>9</sup></a><sup>,</sup><a href="#ref-10" class="cite"><sup>10</sup></a> on the EPI dataset. Cellpose was applied to all 540 images of the EPI test volume, and uSegment3D was used to merge the 2D segmentations into a 3D consensus segmentation. For the 2D&rarr;3D method, we evaluated three levels of supervision: dense ground-truth labels, a single densely labelled section, and sparse SAM-generated labels on 3 images in 5 minutes of human time. The 2D&rarr;3D method with sparse SAM labels achieved a usable segmentation from 5 minutes of human effort, approximately two orders of magnitude less annotation for a modest decrease in segmentation accuracy.</p>
+
+  <figure>
+    <img src={`${base}/fig_epi_comparison.png`} alt="Comparison of 2D to 3D segmentation with Cellpose + uSegment3D on the EPI dataset. Representative XY sections and 3D mesh renderings, plus quantitative comparison of labelled voxels/objects/images, annotation time, and normalized VOI." />
+    <figcaption><strong>Fig. 3.</strong> Comparison of 2D&rarr;3D segmentation with Cellpose + uSegment3D on the EPI dataset. <strong>a</strong>, Representative XY sections (top) and 3D mesh renderings (bottom) of the EPI test volume, comparing ground-truth labels with segmentations produced by different methods at varying levels of supervision. <strong>b</strong>, Quantitative comparison reporting the number of labelled voxels, labelled objects, labelled images, estimated human annotation time, and normalized VOI (sum) for each method.</figcaption>
+  </figure>
+
+  <!-- Neuroglancer: EPI comparison (7-column layout with sub-rows in col 2) -->
+  <div class="viewer-link-container">
+    <a class="viewer-link" href="https://neuroglancer-demo.appspot.com/#!%7B%22dimensions%22%3A%7B%22x%22%3A%5B1e-09%2C%22m%22%5D%2C%22y%22%3A%5B1e-09%2C%22m%22%5D%2C%22z%22%3A%5B1e-09%2C%22m%22%5D%7D%2C%22position%22%3A%5B195%2C366%2C270%5D%2C%22layers%22%3A%5B%7B%22type%22%3A%22image%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fepi%2Fraw%22%2C%22name%22%3A%22Image%22%7D%2C%7B%22type%22%3A%22segmentation%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fepi%2Fgt%22%2C%22name%22%3A%22Ground%20Truth%20labels%22%7D%2C%7B%22type%22%3A%22segmentation%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fepi%2Fsparse_sam%22%2C%22name%22%3A%22Sparse%20SAM%20labels%22%7D%2C%7B%22type%22%3A%22segmentation%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fepi%2Fthresh_ws%22%2C%22name%22%3A%22Threshold%20%2B%20Watershed%22%7D%2C%7B%22type%22%3A%22segmentation%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fepi%2Fuseg_EE%22%2C%22name%22%3A%22uSegment3D%22%7D%2C%7B%22type%22%3A%22segmentation%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fepi%2Fseg_dense%22%2C%22name%22%3A%222D%5Cu21923D%20All%20GT%22%7D%2C%7B%22type%22%3A%22segmentation%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fepi%2Fseg_dense_1section%22%2C%22name%22%3A%222D%5Cu21923D%201%20section%22%7D%2C%7B%22type%22%3A%22segmentation%22%2C%22source%22%3A%22precomputed%3A%2F%2Fhttps%3A%2F%2Fucsdmanorlab.github.io%2Fsparsity%2Fdata%2Fepi%2Fseg_sparsesam%22%2C%22name%22%3A%222D%5Cu21923D%20sparse%20SAM%22%7D%5D%2C%22layout%22%3A%7B%22type%22%3A%22row%22%2C%22children%22%3A%5B%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%5D%2C%22layout%22%3A%22xy%22%7D%2C%7B%22type%22%3A%22column%22%2C%22children%22%3A%5B%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%2C%22Ground%20Truth%20labels%22%5D%2C%22layout%22%3A%22xy%22%7D%2C%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%2C%22Sparse%20SAM%20labels%22%5D%2C%22layout%22%3A%22xy%22%7D%5D%7D%2C%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%2C%22Threshold%20%2B%20Watershed%22%5D%2C%22layout%22%3A%22xy%22%7D%2C%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%2C%22uSegment3D%22%5D%2C%22layout%22%3A%22xy%22%7D%2C%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%2C%222D%5Cu21923D%20All%20GT%22%5D%2C%22layout%22%3A%22xy%22%7D%2C%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%2C%222D%5Cu21923D%201%20section%22%5D%2C%22layout%22%3A%22xy%22%7D%2C%7B%22type%22%3A%22viewer%22%2C%22layers%22%3A%5B%22Image%22%2C%222D%5Cu21923D%20sparse%20SAM%22%5D%2C%22layout%22%3A%22xy%22%7D%5D%7D%2C%22crossSectionScale%22%3A1.33%7D" target="_blank" rel="noopener">
+      Launch Interactive Viewer: EPI Comparison
+    </a>
+  </div>
+
+  <h3>Bootstrapping reduces total reconstruction cost</h3>
+
+  <p>Unproofread 2D&rarr;3D segmentations serve as pseudo ground-truth to bootstrap dedicated 3D segmentation models. We evaluated whether segmentations from different amounts of sparse training data could bootstrap subsequent 3D models without any manual proofreading. Across all six datasets, bootstrapped 3D models trained on 2D&rarr;3D pseudo ground-truth approached the quality of dense 3D baselines at all sparsity levels.</p>
+
+  <figure>
+    <img src={`${base}/fig5c_bootstrapping.png`} alt="Deviation of the total number of split and merge errors to fix per skeleton path length across six datasets relative to the non-bootstrapped 3D baseline." />
+    <figcaption><strong>Fig. 5c.</strong> Deviation of the total number of split and merge errors to fix per skeleton path length (&mu;m<sup>&minus;1</sup>) across six datasets (total ground-truth path lengths in parentheses) relative to the non-bootstrapped 3D baseline. All values fall above zero, except for HARRIS-15 when there were 50 or more bootstrapped objects, where the 2D&rarr;3D method outperformed the non-bootstrapped baseline. This occurs because the manually annotated ground-truth covers only a cylindrical subregion in Volume 2, whereas the pseudo ground-truth segments the entire volume, providing more training labels.</figcaption>
+  </figure>
+
+  <p>Pseudo ground-truth from 10 minutes of non-expert annotation on a single section yielded bootstrapped segmentations requiring only approximately 2-3 additional edits per micron (in HARRIS-15) compared to those from dense expert annotations of entire volumes (1,000&times; more annotation time). Sparser approaches increase the subsequent proofreading burden, but the reduction in upstream annotation yields an order-of-magnitude improvement in total reconstruction time.</p>
+
+  <h3>Cost-benefit analysis</h3>
+
+  <p>We estimated the total reconstruction time as the sum of manual annotation time, machine computation time, and estimated proofreading time for HARRIS-15. Proofreading time was estimated at 0.1 minutes per split correction and 1, 3, or 10 minutes per merge correction, spanning the range of reported proofreading throughputs. All times are in Person Workdays (PWD) at 5 hours per day.</p>
+
+  <table class="cost-table">
+    <thead>
+      <tr>
+        <th align="left">Annotation amount</th>
+        <th align="center">All objects</th>
+        <th align="center">10 objects</th>
+        <th align="center">10 min 2D</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Total merges to fix false splits</td>
+        <td align="center">3,052</td>
+        <td align="center">3,589</td>
+        <td align="center">4,850</td>
+      </tr>
+      <tr>
+        <td>Total splits to fix false merges</td>
+        <td align="center">1,821</td>
+        <td align="center">2,026</td>
+        <td align="center">2,158</td>
+      </tr>
+      <tr class="total-row">
+        <td>Total edits</td>
+        <td>4,964</td>
+        <td>5,723</td>
+        <td>7,156</td>
+      </tr>
+      <tr class="section-header"><td colspan="4">Time (PWD)</td></tr>
+      <tr>
+        <td>Manual annotation</td>
+        <td align="center">1,000</td>
+        <td align="center">25</td>
+        <td align="center">0.03</td>
+      </tr>
+      <tr>
+        <td>Machine computation</td>
+        <td align="center">0.3</td>
+        <td align="center">0.3</td>
+        <td align="center">0.3</td>
+      </tr>
+      <tr>
+        <td>Proofreading splits (0.1 min/edit)</td>
+        <td align="center">0.61</td>
+        <td align="center">0.67</td>
+        <td align="center">1.62</td>
+      </tr>
+      <tr>
+        <td>Proofreading merges (1 min/edit)</td>
+        <td align="center">7.1</td>
+        <td align="center">7.9</td>
+        <td align="center">8.8</td>
+      </tr>
+      <tr class="total-row">
+        <td>Total (1 min/edit)</td>
+        <td align="right">1,008</td>
+        <td align="right">33.9</td>
+        <td align="right"><strong>10.7</strong></td>
+      </tr>
+      <tr>
+        <td>Proofreading merges (3 min/edit)</td>
+        <td align="center">19.2</td>
+        <td align="center">21.5</td>
+        <td align="center">23.2</td>
+      </tr>
+      <tr class="total-row">
+        <td>Total (3 min/edit)</td>
+        <td align="right">1,020</td>
+        <td align="right">47.5</td>
+        <td align="right"><strong>25.1</strong></td>
+      </tr>
+      <tr>
+        <td>Proofreading merges (10 min/edit)</td>
+        <td align="center">61.7</td>
+        <td align="center">68.7</td>
+        <td align="center">73.6</td>
+      </tr>
+      <tr class="total-row">
+        <td>Total (10 min/edit)</td>
+        <td align="right">1,062.6</td>
+        <td align="right">94.7</td>
+        <td align="right"><strong>75.5</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  <figcaption><strong>Table 1.</strong> Bootstrapping cost-benefit analysis for HARRIS-15. Efficiency analysis comparing manual annotation time, machine time, estimated proofreading times, and total reconstruction times at different proofreading rates. Proofreading time per false split is set to 0.1 min/false split. All times are in Person Workdays (PWD) at 5 hours per day. Even at the most pessimistic proofreading rate (10 min/edit), 10 minutes of sparse annotation yields a 14&times; reduction in total reconstruction time compared to dense annotation.</figcaption>
+</section>

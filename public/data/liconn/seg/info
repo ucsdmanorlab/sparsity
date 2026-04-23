@@ -1,0 +1,38 @@
+{
+  "data_type": "uint64",
+  "num_channels": 1,
+  "scales": [
+    {
+      "chunk_sizes": [
+        [
+          64,
+          64,
+          24
+        ]
+      ],
+      "compressed_segmentation_block_size": [
+        8,
+        8,
+        8
+      ],
+      "encoding": "compressed_segmentation",
+      "key": "18_18_24",
+      "resolution": [
+        18,
+        18,
+        24
+      ],
+      "size": [
+        513,
+        512,
+        25
+      ],
+      "voxel_offset": [
+        1656,
+        2179,
+        607
+      ]
+    }
+  ],
+  "type": "segmentation"
+}

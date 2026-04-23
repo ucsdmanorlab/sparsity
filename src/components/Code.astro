@@ -1,0 +1,33 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+
+<section id="code">
+  <h2>Get Started</h2>
+
+  <h3>Napari Plugin</h3>
+  <p>The <a href="https://github.com/ucsdmanorlab/napari-bootstrapper" target="_blank" rel="noopener">napari-bootstrapper</a> plugin provides an interactive graphical interface for applying the 2D&rarr;3D method to small volumes. Create sparse annotations directly in napari, generate dense volumetric segmentations, and perform basic proofreading and post-processing. Works seamlessly with foundation models and the napari plugin ecosystem.</p>
+
+  <pre><code>pip install napari-bootstrapper</code></pre>
+
+  <figure class="no-frame no-invert">
+    <img src={`${base}/napari.gif`} alt="Napari bootstrapper plugin demonstration showing annotation, training, inference, and 3D segmentation output." />
+    <figcaption>Napari-bootstrapper plugin: annotate, train, infer, and export dense 3D segmentations within a single GUI.</figcaption>
+  </figure>
+
+  <h3>Bootstrapper CLI</h3>
+  <p>The complete framework is open-source. It includes modules, scripts, and a command line interface for all components of the workflow: data preparation, 2D&rarr;3D models, LSD models, training pipelines, blockwise parallel inference and post-processing, evaluation, and error identification. Designed to scale to large volumes using lightweight distributed algorithms that do not require high-performance computing clusters.</p>
+
+  <pre><code>pip install bootstrapper
+# or
+git clone https://github.com/ucsdmanorlab/bootstrapper.git
+cd bootstrapper &amp;&amp; pip install -e .</code></pre>
+
+  <h3>Links</h3>
+  <ul>
+    <li><a href="https://github.com/ucsdmanorlab/bootstrapper" target="_blank" rel="noopener">ucsdmanorlab/bootstrapper</a> : Full pipeline (CLI, training, inference, evaluation)</li>
+    <li><a href="https://github.com/ucsdmanorlab/napari-bootstrapper" target="_blank" rel="noopener">ucsdmanorlab/napari-bootstrapper</a> : Napari plugin for interactive 2D&rarr;3D</li>
+    <li><a href="https://github.com/funkelab/gunpowder" target="_blank" rel="noopener">funkelab/gunpowder</a> : Data loading and augmentation</li>
+    <li><a href="https://github.com/funkelab/lsd" target="_blank" rel="noopener">funkelab/lsd</a> : Local Shape Descriptors</li>
+  </ul>
+</section>
