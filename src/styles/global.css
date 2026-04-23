@@ -643,6 +643,20 @@ tr.total-row td {
   white-space: nowrap;
 }
 
+/* Horizontally scroll wide tables on narrow screens (e.g. cost table on mobile).
+ * Wrap any wide table in `<div class="table-scroll">...</div>`. */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 20px 0;
+}
+.table-scroll > table {
+  margin: 0;
+  /* allow columns to size by content rather than compressing on narrow viewports */
+  width: auto;
+  min-width: 100%;
+}
+
 /* Footer */
 .footer {
   padding: 48px 0;

@@ -90,6 +90,7 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <p>We estimated the total reconstruction time as the sum of manual annotation time, machine computation time, and estimated proofreading time for HARRIS-15. Proofreading time was estimated at 0.1 minutes per split correction and 1, 3, or 10 minutes per merge correction, spanning the range of reported proofreading throughputs. All times are in Person Workdays (PWD) at 5 hours per day.</p>
 
+  <div class="table-scroll">
   <table class="cost-table">
     <thead>
       <tr>
@@ -175,5 +176,6 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
       </tr>
     </tbody>
   </table>
+  </div>
   <figcaption><strong>Table 1.</strong> Bootstrapping cost-benefit analysis for HARRIS-15. Efficiency analysis comparing manual annotation time, machine time, estimated proofreading times, and total reconstruction times at different proofreading rates. Proofreading time per false split is set to 0.1 min/false split. All times are in Person Workdays (PWD) at 5 hours per day. Even at the most pessimistic proofreading rate (10 min/edit), 10 minutes of sparse annotation yields a 14&times; reduction in total reconstruction time compared to dense annotation.</figcaption>
 </section>
