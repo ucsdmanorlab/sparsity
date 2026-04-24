@@ -14,16 +14,16 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <figure>
     <img src={`${base}/fig2b_sparse2d.png`} alt="Sparse 2D to dense 2D training. 2D images with sparse labels train a 2D U-Net to learn dense 2D LSDs. Background regions of the target 2D LSDs are masked out during loss computation." />
-    <figcaption><strong>Fig. 2b.</strong> Sparse 2D to dense 2D training. 2D images with sparse labels are used to train a 2D U-Net to learn dense 2D LSDs. Background regions of the target 2D LSDs, denoted by diagonal gray stripes, are masked out during loss computation. All networks compute a weighted mean-squared-error (MSE) loss between predictions and targets during training.</figcaption>
+    <figcaption><strong>Fig. 7.</strong> Sparse 2D to dense 2D training. 2D images with sparse labels are used to train a 2D U-Net to learn dense 2D LSDs. Background regions of the target 2D LSDs, denoted by diagonal gray stripes, are masked out during loss computation. All networks compute a weighted mean-squared-error (MSE) loss between predictions and targets during training.</figcaption>
   </figure>
 
   <h3>Synthetic 3D Label Generation</h3>
 
-  <p>Synthetic 3D training data is generated on-the-fly during training using three distinct strategies to simulate diverse biological structures: morphological dilation from random seeds, section-wise dilation of speckled binary arrays, and watershed on Gaussian-filtered random peaks. A fourth ensemble strategy combines all three equally. These synthetic labels serve as training targets for the Stage 2 network below.</p>
+  <p>Synthetic 3D training data is generated using three distinct strategies to simulate diverse biological structures: morphological dilation from random seeds, section-wise dilation of speckled binary arrays, and watershed on Gaussian-filtered random peaks. A fourth ensemble strategy combines all three equally. These synthetic labels serve as the source of both inputs and targets for the Stage 2 network below and are generated on-the-fly during training.</p>
 
   <figure>
     <img src={`${base}/fig2d_synthetic.png`} alt="Generation of 3D synthetic data through a series of morphological operations and transformations applied to a random array of noise or foreground voxels." />
-    <figcaption><strong>Fig. 2d.</strong> Generation of 3D synthetic data through a series of morphological operations and transformations applied to a random array of noise or foreground voxels. The <a href="https://github.com/funkelab/gunpowder" target="_blank" rel="noopener">Gunpowder</a> implementation is available at <a href="https://github.com/ucsdmanorlab/bootstrapper/blob/main/bootstrapper/gp/create_labels.py" target="_blank" rel="noopener"><code>create_labels.py</code></a>.</figcaption>
+    <figcaption><strong>Fig. 8.</strong> Generation of 3D synthetic data through a series of morphological operations and transformations applied to a random array of noise or foreground voxels. The <a href="https://github.com/funkelab/gunpowder" target="_blank" rel="noopener">Gunpowder</a> implementation is available at <a href="https://github.com/ucsdmanorlab/bootstrapper/blob/main/bootstrapper/gp/create_labels.py" target="_blank" rel="noopener"><code>create_labels.py</code></a>.</figcaption>
   </figure>
 
   <!-- Neuroglancer: Synthetic 3 batches x 5 arrays grid -->
@@ -35,10 +35,19 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <h3>Stage 2: Stacked 2D &rarr; 3D</h3>
 
-  <p>A lightweight 3D U-Net is pre-trained entirely on the synthetic 3D labels described above: the network learns to map noisy stacked 2D LSDs to clean 3D affinities, using synthetic labels to simulate both inputs and targets. Because it only ever sees stacked 2D predictions as input, it acquires z-axis connectivity priors without requiring any 3D annotation from the target dataset. At inference, Stage 1 and Stage 2 models run sequentially; seeded watershed on the Stage 2 affinities produces the final 3D instance segmentation.</p>
+  <p>A lightweight 3D U-Net is pre-trained on the synthetic 3D labels described above. It learns to map noisy stacked 2D LSDs to clean 3D affinities, with both inputs and targets simulated from the synthetic labels. Because the 3D network only ever sees stacked 2D predictions as input, it acquires z-axis connectivity priors entirely from the synthetic data, without requiring any 3D annotation from the target dataset.</p>
+
+  <figure>
+    <img src={`${base}/fig2c.png`} alt="Stacked dense 2D to dense 3D training. A 3D U-Net is trained to map stacked 2D LSDs to 3D affinities. Both the inputs (stacked 2D LSDs) and the targets (3D affinities) are simulated from synthetic 3D labels." />
+    <figcaption><strong>Fig. 9.</strong> Stacked dense 2D to dense 3D training. A 3D U-Net is trained to map stacked 2D LSDs to 3D affinities. Both the inputs (stacked 2D LSDs) and the targets (3D affinities) are simulated on-the-fly from the synthetic 3D labels described, training uses a weighted mean-squared-error (MSE) loss between predictions and targets.</figcaption>
+  </figure>
+
+  <h3>Inference</h3>
+
+  <p>At inference, the two trained U-Nets run sequentially on a target volume. The 2D U-Net is applied section-by-section to produce stacked 2D LSDs, which the 3D U-Net converts to 3D affinities. Seeded watershed on the Stage 2 affinities produces the final 3D instance segmentation.</p>
 
   <figure>
     <img src={`${base}/fig2a_pipeline.png`} alt="2D to 3D inference pipeline. Sections from a 3D image volume are input slice-by-slice to the trained 2D U-Net to generate 2D LSD slices, from which the trained 3D U-Net infers 3D affinities." />
-    <figcaption><strong>Fig. 2a.</strong> 2D&rarr;3D inference pipeline. Five example sections shown for simplicity. Sections from a 3D image volume are input slice-by-slice to the trained 2D U-Net to generate 2D LSD slices, from which the trained 3D U-Net infers 3D affinities. LSDs and affinities are RGB encoded for visualization. Seeded watershed generates 3D segmentation from the affinities.</figcaption>
+    <figcaption><strong>Fig. 10.</strong> 2D&rarr;3D inference pipeline. Five example sections shown for simplicity. Sections from a 3D image volume are input slice-by-slice to the trained 2D U-Net to generate 2D LSD slices, from which the trained 3D U-Net infers 3D affinities. LSDs and affinities are RGB encoded for visualization. Seeded watershed generates 3D segmentation from the affinities.</figcaption>
   </figure>
 </section>

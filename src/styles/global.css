@@ -299,7 +299,7 @@ li {
   margin-top: 8px;
 }
 
-/* Neuroglancer / iframe — matches LSD pattern */
+/* Neuroglancer / iframe, matches LSD pattern */
 .responsive-container {
   position: relative;
   width: 100%;

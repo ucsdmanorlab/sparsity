@@ -3,14 +3,17 @@ const base = import.meta.env.BASE_URL;
 ---
 <!-- Hero / Header -->
 <header class="hero">
-  <figure class="hero-gif no-frame no-invert" style="margin-bottom: 0;">
+  <figure class="hero-gif no-frame no-invert" style="margin: 0;">
     <!-- Two pre-composited MP4s: dark variant is on #191b1f, light on #ffffff.
-         A MutationObserver swaps src when the user toggles the theme. -->
+         A MutationObserver swaps src when the user toggles the theme.
+         Sizing: grow the video to fill the viewport minus space needed for title + authors.
+         Video aspect ratio is 1920:900 = 2.1333. Cap height at 75vh; derive max-width so
+         the natural aspect ratio keeps it from overflowing. -->
     <video id="hero-video" autoplay loop muted playsinline preload="auto"
            src={`${base}/header_light.mp4`}
            data-src-dark={`${base}/header_dark.mp4`}
            data-src-light={`${base}/header_light.mp4`}
-           style="width: 100%; max-height: 1080px; object-fit: contain; border-radius: 6px; display: block;">
+           style="width: 100%; max-width: min(1920px, calc(75vh * 2.1333)); height: auto; border-radius: 6px; display: block; margin: 0 auto;">
     </video>
   </figure>
   <script is:inline>
