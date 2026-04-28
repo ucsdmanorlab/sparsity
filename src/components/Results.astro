@@ -15,11 +15,11 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
   <div class="image-grid cols-2">
     <figure>
       <img src={`${base}/fig1b_sparse_annos.png`} alt="Example sparse, non-expert annotations created in 30 minutes for HARRIS-15, partitioned into three 10-minute subsets." />
-      <figcaption><strong>Fig. 1.</strong> Example sparse, non-expert annotations created in 30 minutes for HARRIS-15. Annotations were partitioned into three approximately 10-minute subsets to assess the effect of annotation time on segmentation quality.</figcaption>
+      <figcaption><strong>Fig. 3.</strong> Example sparse, non-expert annotations created in 30 minutes for HARRIS-15. Annotations were partitioned into three approximately 10-minute subsets to assess the effect of annotation time on segmentation quality.</figcaption>
     </figure>
     <figure>
       <img src={`${base}/fig1c_comparison.png`} alt="Orthogonal views comparing 2D to 3D result with 10 minutes of sparse annotation, 3D Baseline result with all dense annotations, and ground-truth." />
-      <figcaption><strong>Fig. 2.</strong> Orthogonal views comparing the 2D&rarr;3D result with 10 minutes of sparse annotation, the 3D Baseline result with all dense annotations, and ground-truth. Total time to segmentation includes human annotation time and machine time (training + inference + post-processing).</figcaption>
+      <figcaption><strong>Fig. 4.</strong> Orthogonal views comparing the 2D&rarr;3D result with 10 minutes of sparse annotation, the 3D Baseline result with all dense annotations, and ground-truth. Total time to segmentation includes human annotation time and machine time (training + inference + post-processing).</figcaption>
     </figure>
   </div>
 
@@ -32,7 +32,7 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <figure>
     <img src={`${base}/fig1d_voi_ablation.png`} alt="Deviation of normalized VOI sum across six datasets relative to the 3D baseline, plotted against annotation budget." />
-    <figcaption><strong>Fig. 3.</strong> Deviation of normalized Variation of Information (VOI) sum across six datasets (total ground-truth path lengths in parentheses) relative to the 3D Baseline trained on all dense annotations. Approximate manual annotation times are marked for the HARRIS-15 dataset. Across all amounts and datasets, the VOI scores consistently approached those of the 3D baselines.</figcaption>
+    <figcaption><strong>Fig. 5.</strong> Deviation of normalized Variation of Information (VOI) sum across six datasets (total ground-truth path lengths in parentheses) relative to the 3D Baseline trained on all dense annotations. Approximate manual annotation times are marked for the HARRIS-15 dataset. Across all amounts and datasets, the VOI scores consistently approached those of the 3D baselines.</figcaption>
   </figure>
 
   <h3>Generalization across imaging modalities and segmentation tasks</h3>
@@ -49,7 +49,7 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <figure>
     <img src={`${base}/fig4_generalization.png`} alt="The 2D to 3D method generalizes across imaging modalities and segmentation tasks. Five datasets with representative 2D images, published ground-truth, published 3D meshes, 2D to 3D segmentation results, and 2D to 3D meshes." />
-    <figcaption><strong>Fig. 4.</strong> The 2D&rarr;3D method generalizes across imaging modalities and segmentation tasks. Five datasets spanning distinct imaging modalities, biological targets, and annotation strategies. Each row displays: a representative 2D image (col 1), the published proofread, manual, or ground-truth segmentation (col 2), the published 3D mesh (col 3), our 2D&rarr;3D segmentation result (col 4), and our 2D&rarr;3D mesh (col 5). Datasets: <strong>a</strong> LICONN, <strong>b</strong> PRISM, <strong>c</strong> CREMI-C, <strong>d</strong> MitoEM-H, <strong>e</strong> Fluo-C2DL-Huh7.</figcaption>
+    <figcaption><strong>Fig. 6.</strong> The 2D&rarr;3D method generalizes across imaging modalities and segmentation tasks. Five datasets spanning distinct imaging modalities, biological targets, and annotation strategies. Each row displays: a representative 2D image (col 1), the published proofread, manual, or ground-truth segmentation (col 2), the published 3D mesh (col 3), our 2D&rarr;3D segmentation result (col 4), and our 2D&rarr;3D mesh (col 5). Datasets: <strong>a</strong> LICONN, <strong>b</strong> PRISM, <strong>c</strong> CREMI-C, <strong>d</strong> MitoEM-H, <strong>e</strong> Fluo-C2DL-Huh7.</figcaption>
 
   </figure>
 
@@ -66,7 +66,7 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <figure>
     <img src={`${base}/fig_epi_comparison.png`} alt="Comparison of 2D to 3D segmentation with Cellpose + uSegment3D on the EPI dataset. Representative XY sections and 3D mesh renderings, plus quantitative comparison of labelled voxels/objects/images, annotation time, and normalized VOI." />
-    <figcaption><strong>Fig. 5.</strong> Comparison of 2D&rarr;3D segmentation with Cellpose + uSegment3D on the EPI dataset. <strong>a</strong>, Representative XY sections (top) and 3D mesh renderings (bottom) of the EPI test volume, comparing ground-truth labels with segmentations produced by different methods at varying levels of supervision. <strong>b</strong>, Quantitative comparison reporting the number of labelled voxels, labelled objects, labelled images, estimated human annotation time, and normalized VOI (sum) for each method.</figcaption>
+    <figcaption><strong>Fig. 7.</strong> Comparison of 2D&rarr;3D segmentation with Cellpose + uSegment3D on the EPI dataset. <strong>a</strong>, Representative XY sections (top) and 3D mesh renderings (bottom) of the EPI test volume, comparing ground-truth labels with segmentations produced by different methods at varying levels of supervision. <strong>b</strong>, Quantitative comparison reporting the number of labelled voxels, labelled objects, labelled images, estimated human annotation time, and normalized VOI (sum) for each method.</figcaption>
   </figure>
 
   <!-- Neuroglancer: EPI comparison (7-column layout with sub-rows in col 2) -->
@@ -82,7 +82,7 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <figure>
     <img src={`${base}/fig5c_bootstrapping.png`} alt="Deviation of the total number of split and merge errors to fix per skeleton path length across six datasets relative to the non-bootstrapped 3D baseline." />
-    <figcaption><strong>Fig. 6.</strong> Deviation of the total number of split and merge errors to fix per skeleton path length (&mu;m<sup>&minus;1</sup>) across six datasets (total ground-truth path lengths in parentheses) relative to the non-bootstrapped 3D baseline. All values fall above zero, except for HARRIS-15 when there were 50 or more bootstrapped objects, where the 2D&rarr;3D method outperformed the non-bootstrapped baseline. This occurs because the manually annotated ground-truth covers only a cylindrical subregion in Volume 2, whereas the pseudo ground-truth segments the entire volume, providing more training labels.</figcaption>
+    <figcaption><strong>Fig. 8.</strong> Deviation of the total number of split and merge errors to fix per skeleton path length (&mu;m<sup>&minus;1</sup>) across six datasets (total ground-truth path lengths in parentheses) relative to the non-bootstrapped 3D baseline. All values fall above zero, except for HARRIS-15 when there were 50 or more bootstrapped objects, where the 2D&rarr;3D method outperformed the non-bootstrapped baseline. This occurs because the manually annotated ground-truth covers only a cylindrical subregion in Volume 2, whereas the pseudo ground-truth segments the entire volume, providing more training labels.</figcaption>
   </figure>
 
   <p>Pseudo ground-truth from 10 minutes of non-expert annotation on a single section yielded bootstrapped segmentations requiring only approximately 2-3 additional edits per micron (in HARRIS-15) compared to those from dense expert annotations of entire volumes (1,000&times; more annotation time). Sparser approaches increase the subsequent proofreading burden, but the reduction in upstream annotation yields an order-of-magnitude improvement in total reconstruction time.</p>

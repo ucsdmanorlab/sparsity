@@ -1,4 +1,5 @@
 ---
+const base = import.meta.env.BASE_URL;
 ---
 
 <section id="motivation">
@@ -15,4 +16,14 @@
   <p>We asked: <strong>how sparse can the annotations be?</strong></p>
 
   <p>We developed a 2D&rarr;3D method that generates dense 3D instance segmentations from sparse 2D annotations. Ten minutes of non-expert painting on a few 2D sections is sufficient to bootstrap 3D segmentations approaching the quality of models trained on dense expert ground-truth on matched evaluation volumes, a 1,000-fold reduction in annotation time. The approach works across diverse imaging modalities, biological targets, and segmentation tasks, and requires no domain-specific pretraining.</p>
+
+  <figure>
+    <img src={`${base}/fig_distill_1.png`} alt="Cost vs. quality and improvement per additional order of magnitude of runtime on HARRIS-15." />
+    <figcaption><strong>Fig. 1.</strong> Cost vs. quality and improvement per additional order of magnitude of runtime on HARRIS-15. Left: &Delta;-NVI sum relative to the 3D baseline (lower is better) plotted against estimated annotation time. Right: improvement over the cheapest sparsity (10 min 2D) plotted against additional orders of magnitude of annotation time.</figcaption>
+  </figure>
+
+  <figure>
+    <img src={`${base}/fig_distill_2.png`} alt="2D to 3D bootstrapping shortens the path to high-quality training data on HARRIS-15." />
+    <figcaption><strong>Fig. 2.</strong> 2D&rarr;3D bootstrapping shortens the path to high-quality training data on HARRIS-15. Three paths are compared. The Direct (upper bound) path annotates dense ground truth over 6 calendar months and trains a 3D model on it. The Direct (lower bound) path does the same over 1 calendar month. The Bootstrap path annotates sparsely (10 min 2D), trains a 2D&rarr;3D model, and generates pseudo-GT, then trains the same 3D model on that pseudo-GT. Bootstrapping saves 1&ndash;6 months of calendar time and $25k&ndash;$125k of human-annotator labor at $25/h.</figcaption>
+  </figure>
 </section>

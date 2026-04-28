@@ -6,6 +6,7 @@ writes precomputed output suitable for static HTTPS hosting (GitHub Pages).
 from pathlib import Path
 import numpy as np
 import zarr
+import cc3d
 from cloudvolume import CloudVolume
 
 SRC = Path("/Users/vijay/work/test_vols/website_vols")
@@ -19,8 +20,12 @@ def _j(src_zarr, name, dst_ds, dst_layer, layer_type, **extras):
 
 # HARRIS: every array cropped to dense_labels' ROI; segmentation layers
 # (3D baseline, 10-min bootstrap) additionally masked by dense_labels_mask.
+# All HARRIS segmentation layers are relabeled by 26-connectivity components
+# so cropping/masking doesn't leave disjoint blobs sharing an id.
 HARRIS_CROP = {"crop_roi_from": "voljo.zarr/dense_labels"}
 HARRIS_CROP_MASK = {**HARRIS_CROP, "mask_from": "voljo.zarr/dense_labels_mask"}
+HARRIS_SEG_CROP = {**HARRIS_CROP, "relabel_cc": True}
+HARRIS_SEG_CROP_MASK = {**HARRIS_CROP_MASK, "relabel_cc": True}
 
 # EPI: drop first 95 y voxels across every array.
 EPI_YCROP = {"y_crop_start": 95}
@@ -28,10 +33,10 @@ EPI_YCROP = {"y_crop_start": 95}
 JOBS = [
     # HARRIS-15 (voljo.zarr -> harris_15) — cropped to dense_labels ROI
     _j("voljo.zarr", "raw",              "harris_15", "raw",           "image",        **HARRIS_CROP),
-    _j("voljo.zarr", "3d_dense",         "harris_15", "3d_baseline",   "segmentation", **HARRIS_CROP_MASK),
-    _j("voljo.zarr", "dense_labels",     "harris_15", "gt_labels",     "segmentation", **HARRIS_CROP),
-    _j("voljo.zarr", "sparse_2d_labels", "harris_15", "sparse_labels", "segmentation", **HARRIS_CROP),
-    _j("voljo.zarr", "10min_paint_2d",   "harris_15", "segmentation",  "segmentation", **HARRIS_CROP_MASK),
+    _j("voljo.zarr", "3d_dense",         "harris_15", "3d_baseline",   "segmentation", **HARRIS_SEG_CROP_MASK),
+    _j("voljo.zarr", "dense_labels",     "harris_15", "gt_labels",     "segmentation", **HARRIS_SEG_CROP),
+    _j("voljo.zarr", "sparse_2d_labels", "harris_15", "sparse_labels", "segmentation", **HARRIS_SEG_CROP),
+    _j("voljo.zarr", "10min_paint_2d",   "harris_15", "segmentation",  "segmentation", **HARRIS_SEG_CROP_MASK),
     # EPI — drop first 95 y voxels on every array
     _j("epi.zarr", "raw",                "epi", "raw",                "image",        **EPI_YCROP),
     _j("epi.zarr", "labels_dense",       "epi", "gt",                 "segmentation", **EPI_YCROP),
@@ -90,14 +95,19 @@ def _crop_to_roi(data, vox_zyx, offset_zyx, roi_offset_zyx, roi_shape_zyx, roi_v
 
 
 def convert(src_zarr, name, dst_ds, dst_layer, layer_type,
-            crop_roi_from=None, mask_from=None, y_crop_start=None):
+            crop_roi_from=None, mask_from=None, y_crop_start=None,
+            relabel_cc=False):
     """
     crop_roi_from: optional "path/within/SRC" of a zarr whose offset+shape
         defines the world-space ROI to crop `data` to.
     mask_from: optional "path/within/SRC" of a binary mask; applied after crop.
         Where mask == 0, output is zeroed.
-    y_crop_start: optional int — drop the first N voxels along the y axis
+    y_crop_start: optional int, drop the first N voxels along the y axis
         (axis 1 in zarr-native zyx layout).
+    relabel_cc: optional bool, after crop/mask reassign every spatially
+        connected component (26-connectivity) to a unique label. Use for
+        segmentations whose original ids may be split into disjoint blobs
+        by cropping or masking.
     """
     arr, vox_zyx, offset_zyx = _load_zarr_with_attrs(SRC / src_zarr / name)
 
@@ -125,6 +135,18 @@ def convert(src_zarr, name, dst_ds, dst_layer, layer_type,
         mask_data = mask_data[mstart[0]:mend[0], mstart[1]:mend[1], mstart[2]:mend[2]]
         assert mask_data.shape == data.shape, f"mask shape {mask_data.shape} != data {data.shape}"
         data = np.where(mask_data > 0, data, 0)
+
+    # Connected-components relabel (HARRIS segmentations after crop/mask).
+    # cc3d treats different input labels as already-distinct, and splits any
+    # single label whose voxels form multiple disjoint components.
+    if relabel_cc and data.ndim == 3:
+        n_before = int(np.unique(data).size) - (1 if (data == 0).any() else 0)
+        data = cc3d.connected_components(data, connectivity=26)
+        n_after = int(data.max())
+        # Promote to uint64 so downstream segmentation encoder sees a valid
+        # segmentation dtype regardless of cc3d's chosen output dtype.
+        data = data.astype(np.uint64)
+        print(f"  cc3d relabel {dst_ds}/{dst_layer}: {n_before} ids -> {n_after} components")
 
     if data.ndim == 4:
         # (c, z, y, x)

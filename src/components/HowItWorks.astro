@@ -14,7 +14,7 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <figure>
     <img src={`${base}/fig2b_sparse2d.png`} alt="Sparse 2D to dense 2D training. 2D images with sparse labels train a 2D U-Net to learn dense 2D LSDs. Background regions of the target 2D LSDs are masked out during loss computation." />
-    <figcaption><strong>Fig. 7.</strong> Sparse 2D to dense 2D training. 2D images with sparse labels are used to train a 2D U-Net to learn dense 2D LSDs. Background regions of the target 2D LSDs, denoted by diagonal gray stripes, are masked out during loss computation. All networks compute a weighted mean-squared-error (MSE) loss between predictions and targets during training.</figcaption>
+    <figcaption><strong>Fig. 9.</strong> Sparse 2D to dense 2D training. 2D images with sparse labels are used to train a 2D U-Net to learn dense 2D LSDs. Background regions of the target 2D LSDs, denoted by diagonal gray stripes, are masked out during loss computation. All networks compute a weighted mean-squared-error (MSE) loss between predictions and targets during training.</figcaption>
   </figure>
 
   <h3>Synthetic 3D Label Generation</h3>
@@ -23,7 +23,7 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <figure>
     <img src={`${base}/fig2d_synthetic.png`} alt="Generation of 3D synthetic data through a series of morphological operations and transformations applied to a random array of noise or foreground voxels." />
-    <figcaption><strong>Fig. 8.</strong> Generation of 3D synthetic data through a series of morphological operations and transformations applied to a random array of noise or foreground voxels. The <a href="https://github.com/funkelab/gunpowder" target="_blank" rel="noopener">Gunpowder</a> implementation is available at <a href="https://github.com/ucsdmanorlab/bootstrapper/blob/main/bootstrapper/gp/create_labels.py" target="_blank" rel="noopener"><code>create_labels.py</code></a>.</figcaption>
+    <figcaption><strong>Fig. 10.</strong> Generation of 3D synthetic data through a series of morphological operations and transformations applied to a random array of noise or foreground voxels. The <a href="https://github.com/funkelab/gunpowder" target="_blank" rel="noopener">Gunpowder</a> implementation is available at <a href="https://github.com/ucsdmanorlab/bootstrapper/blob/main/bootstrapper/gp/create_labels.py" target="_blank" rel="noopener"><code>create_labels.py</code></a>.</figcaption>
   </figure>
 
   <!-- Neuroglancer: Synthetic 3 batches x 5 arrays grid -->
@@ -39,7 +39,7 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <figure>
     <img src={`${base}/fig2c.png`} alt="Stacked dense 2D to dense 3D training. A 3D U-Net is trained to map stacked 2D LSDs to 3D affinities. Both the inputs (stacked 2D LSDs) and the targets (3D affinities) are simulated from synthetic 3D labels." />
-    <figcaption><strong>Fig. 9.</strong> Stacked dense 2D to dense 3D training. A 3D U-Net is trained to map stacked 2D LSDs to 3D affinities. Both the inputs (stacked 2D LSDs) and the targets (3D affinities) are simulated on-the-fly from the synthetic 3D labels described, training uses a weighted mean-squared-error (MSE) loss between predictions and targets.</figcaption>
+    <figcaption><strong>Fig. 11.</strong> Stacked dense 2D to dense 3D training. A 3D U-Net is trained to map stacked 2D LSDs to 3D affinities. Both the inputs (stacked 2D LSDs) and the targets (3D affinities) are simulated on-the-fly from the synthetic 3D labels described, training uses a weighted mean-squared-error (MSE) loss between predictions and targets.</figcaption>
   </figure>
 
   <h3>Inference</h3>
@@ -48,6 +48,6 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <figure>
     <img src={`${base}/fig2a_pipeline.png`} alt="2D to 3D inference pipeline. Sections from a 3D image volume are input slice-by-slice to the trained 2D U-Net to generate 2D LSD slices, from which the trained 3D U-Net infers 3D affinities." />
-    <figcaption><strong>Fig. 10.</strong> 2D&rarr;3D inference pipeline. Five example sections shown for simplicity. Sections from a 3D image volume are input slice-by-slice to the trained 2D U-Net to generate 2D LSD slices, from which the trained 3D U-Net infers 3D affinities. LSDs and affinities are RGB encoded for visualization. Seeded watershed generates 3D segmentation from the affinities.</figcaption>
+    <figcaption><strong>Fig. 12.</strong> 2D&rarr;3D inference pipeline. Five example sections shown for simplicity. Sections from a 3D image volume are input slice-by-slice to the trained 2D U-Net to generate 2D LSD slices, from which the trained 3D U-Net infers 3D affinities. LSDs and affinities are RGB encoded for visualization. Seeded watershed generates 3D segmentation from the affinities.</figcaption>
   </figure>
 </section>
