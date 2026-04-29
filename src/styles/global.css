@@ -565,6 +565,24 @@ figure.no-invert video {
   max-height: 400px;
 }
 
+/* Equal-width 2-col variant. Stacks to 1 column on mobile via the
+ * existing .image-grid.cols-2 media query below (this class is also .cols-2).
+ * Figures use block layout (overriding the flex from .cols-2) so the image
+ * sits at the top of each cell instead of centering vertically. Plots stay
+ * aligned at the top regardless of caption length. */
+.image-grid.cols-2-equal {
+  grid-template-columns: 1fr 1fr;
+}
+
+.image-grid.cols-2-equal figure {
+  display: block;
+}
+
+.image-grid.cols-2-equal figure img {
+  flex: none;
+  max-height: none;
+}
+
 .image-grid.cols-3 {
   grid-template-columns: 1fr 1fr 1fr;
 }
