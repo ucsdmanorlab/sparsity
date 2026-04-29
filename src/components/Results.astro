@@ -15,13 +15,27 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
   <div class="image-grid cols-2">
     <figure>
       <img src={`${base}/fig1b_sparse_annos.png`} alt="Example sparse, non-expert annotations created in 30 minutes for HARRIS-15, partitioned into three 10-minute subsets." />
-      <figcaption><strong>Fig. 3.</strong> Example sparse, non-expert annotations created in 30 minutes for HARRIS-15. Annotations were partitioned into three approximately 10-minute subsets to assess the effect of annotation time on segmentation quality.</figcaption>
+      <figcaption><strong>Fig. 1.</strong> Example sparse, non-expert annotations created in 30 minutes for HARRIS-15. Annotations were partitioned into three approximately 10-minute subsets to assess the effect of annotation time on segmentation quality.</figcaption>
     </figure>
     <figure>
       <img src={`${base}/fig1c_comparison.png`} alt="Orthogonal views comparing 2D to 3D result with 10 minutes of sparse annotation, 3D Baseline result with all dense annotations, and ground-truth." />
-      <figcaption><strong>Fig. 4.</strong> Orthogonal views comparing the 2D&rarr;3D result with 10 minutes of sparse annotation, the 3D Baseline result with all dense annotations, and ground-truth. Total time to segmentation includes human annotation time and machine time (training + inference + post-processing).</figcaption>
+      <figcaption><strong>Fig. 2.</strong> Orthogonal views comparing the 2D&rarr;3D result with 10 minutes of sparse annotation, the 3D Baseline result with all dense annotations, and ground-truth. Total time to segmentation includes human annotation time and machine time (training + inference + post-processing).</figcaption>
     </figure>
   </div>
+
+  <p>On HARRIS-15, segmentation errors against the dense baseline drop with increasing amounts of annotation, with diminishing returns at each additional order of magnitude of annotation time.</p>
+
+  <figure>
+    <img src={`${base}/fig_distill_1.png`} alt="Cost vs. quality and improvement per additional order of magnitude of runtime on HARRIS-15." />
+    <figcaption><strong>Fig. 3.</strong> Cost vs. quality and improvement per additional order of magnitude of runtime on HARRIS-15. Left: &Delta;-NVI sum (segmentation errors relative to the 3D baseline; lower is better) plotted against estimated annotation time. Right: improvement over the cheapest sparsity (10 min 2D) plotted against additional orders of magnitude of annotation time.</figcaption>
+  </figure>
+
+  <p>In practical terms, the 2D&rarr;3D bootstrap path approaches the quality of direct dense annotation while saving 1-6 months of calendar time and $25k-$125k of expert annotation labor.</p>
+
+  <figure>
+    <img src={`${base}/fig_distill_2.png`} alt="2D to 3D bootstrapping shortens the path to high-quality training data on HARRIS-15." />
+    <figcaption><strong>Fig. 4.</strong> 2D&rarr;3D bootstrapping shortens the path to high-quality training data on HARRIS-15. Three paths are compared. The Direct (upper bound) path annotates dense ground truth over 6 calendar months and trains a 3D model on it. The Direct (lower bound) path does the same over 1 calendar month. The Bootstrap path annotates sparsely (10 min 2D), trains a 2D&rarr;3D model, and generates pseudo-GT, then trains the same 3D model on that pseudo-GT. Bootstrapping saves 1&ndash;6 months of calendar time and $25k&ndash;$125k of human-annotator labor at $25/h.</figcaption>
+  </figure>
 
   <!-- Neuroglancer: Bootstrapped HARRIS-15 Segmentation (4-column layout with sub-rows) -->
   <div class="viewer-link-container">
