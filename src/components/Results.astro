@@ -80,6 +80,34 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
     </a>
   </div>
 
+  <!-- Neuroglancer: PRISM (18-channel LM; multichannel shuffle shader) -->
+  <div class="viewer-link-container">
+    <a class="viewer-link" href={`https://neuroglancer-demo.appspot.com/#!${import.meta.env.DEV ? 'http://localhost:9091/ng/prism.dev.json' : 'https://ucsdmanorlab.github.io/sparsity/ng/prism.prod.json'}`} target="_blank" rel="noopener">
+      Launch Interactive Viewer: PRISM 2D&rarr;3D
+    </a>
+  </div>
+
+  <!-- Neuroglancer: CREMI-C synaptic clefts -->
+  <div class="viewer-link-container">
+    <a class="viewer-link" href={`https://neuroglancer-demo.appspot.com/#!${import.meta.env.DEV ? 'http://localhost:9091/ng/cremi_clefts.dev.json' : 'https://ucsdmanorlab.github.io/sparsity/ng/cremi_clefts.prod.json'}`} target="_blank" rel="noopener">
+      Launch Interactive Viewer: CREMI-C Synaptic Clefts 2D&rarr;3D
+    </a>
+  </div>
+
+  <!-- Neuroglancer: MitoEM-H mitochondria -->
+  <div class="viewer-link-container">
+    <a class="viewer-link" href={`https://neuroglancer-demo.appspot.com/#!${import.meta.env.DEV ? 'http://localhost:9091/ng/mitoem.dev.json' : 'https://ucsdmanorlab.github.io/sparsity/ng/mitoem.prod.json'}`} target="_blank" rel="noopener">
+      Launch Interactive Viewer: MitoEM-H Mitochondria 2D&rarr;3D
+    </a>
+  </div>
+
+  <!-- Neuroglancer: Fluo-C2DL-Huh7 cells -->
+  <div class="viewer-link-container">
+    <a class="viewer-link" href={`https://neuroglancer-demo.appspot.com/#!${import.meta.env.DEV ? 'http://localhost:9091/ng/fluo.dev.json' : 'https://ucsdmanorlab.github.io/sparsity/ng/fluo.prod.json'}`} target="_blank" rel="noopener">
+      Launch Interactive Viewer: Fluo-C2DL-Huh7 2D&rarr;3D
+    </a>
+  </div>
+
   <h3>Comparison with existing tools</h3>
 
   <p>To contextualize the method against existing general-purpose segmentation tools, we compared it with Cellpose + uSegment3D<a href="#ref-5" class="cite"><sup>5</sup></a><sup>,</sup><a href="#ref-14" class="cite"><sup>14</sup></a> on the EPI dataset. Cellpose was applied to all 540 images of the EPI test volume, and uSegment3D was used to merge the 2D segmentations into a 3D consensus segmentation. For the 2D&rarr;3D method, we evaluated three levels of supervision: dense ground-truth labels, a single densely labelled section, and sparse SAM-generated labels on 3 images in 5 minutes of human time. The 2D&rarr;3D method with sparse SAM labels achieved a usable segmentation from 5 minutes of human effort, approximately two orders of magnitude less annotation for a modest decrease in segmentation accuracy.</p>

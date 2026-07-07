@@ -1,0 +1,38 @@
+{
+  "description": "",
+  "owners": [],
+  "processing": [
+    {
+      "by": "b'vvenu@utexas.edu'",
+      "date": "2026-07-07 14:28 CDT",
+      "method": {
+        "cdn_cache": false,
+        "closed_dataset_edges": true,
+        "compress": null,
+        "dry_run": false,
+        "dust_global": false,
+        "dust_threshold": 100,
+        "encoding": "precomputed",
+        "exclude_object_ids": [],
+        "fill_holes": 0,
+        "fill_missing": false,
+        "frag_path": null,
+        "layer_path": "file:///data/data6/vijay/website/sparsity/public/data/prism/seg",
+        "max_simplification_error": 40,
+        "mesh_dir": "mesh",
+        "mip": 0,
+        "object_ids": null,
+        "shape": [
+          256,
+          256,
+          256
+        ],
+        "sharded": false,
+        "simplification": true,
+        "spatial_index": true,
+        "task": "MeshTask"
+      }
+    }
+  ],
+  "sources": []
+}

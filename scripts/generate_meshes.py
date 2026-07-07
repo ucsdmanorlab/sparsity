@@ -6,11 +6,12 @@ fragments per segment plus a manifest per segment).
 
 Idempotent: re-running regenerates meshes in place.
 """
+import os
 from pathlib import Path
 from taskqueue import LocalTaskQueue
 import igneous.task_creation as tc
 
-DST = Path("/Users/vijay/work/sparsity/sparsity.github.io/public/data")
+DST = Path(os.environ.get("WEBSITE_DATA", "/Users/vijay/work/sparsity/sparsity.github.io/public/data"))
 
 # (dataset, layer) — only include volumes where 3D meshes are meaningful
 # (i.e. skip single-section or 3-section sparse labels).
@@ -30,6 +31,15 @@ LAYERS = [
     ("synthetic", "batch_60001/labels"),
     ("synthetic", "batch_60004/labels"),
     ("synthetic", "batch_60007/labels"),
+    # Generalization datasets (gt + 2D->3D seg; sparse layers skipped)
+    ("prism", "gt"),
+    ("prism", "seg"),
+    ("mitoem", "gt"),
+    ("mitoem", "seg"),
+    ("cremi_clefts", "gt"),
+    ("cremi_clefts", "seg"),
+    ("fluo", "gt"),
+    ("fluo", "seg"),
 ]
 
 

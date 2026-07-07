@@ -10,11 +10,12 @@ For each layer:
 Expected reduction: 5-20x smaller. Neuroglancer uses HTTP range requests
 on the .shard files, which GitHub Pages supports.
 """
+import os
 from pathlib import Path
 from taskqueue import LocalTaskQueue
 import igneous.task_creation as tc
 
-DST = Path("/Users/vijay/work/sparsity/sparsity.github.io/public/data")
+DST = Path(os.environ.get("WEBSITE_DATA", "/Users/vijay/work/sparsity/sparsity.github.io/public/data"))
 
 LAYERS = [
     ("harris_15", "3d_baseline"),
@@ -31,6 +32,15 @@ LAYERS = [
     ("synthetic", "batch_60001/labels"),
     ("synthetic", "batch_60004/labels"),
     ("synthetic", "batch_60007/labels"),
+    # Generalization datasets (gt + 2D->3D seg; sparse layers skipped)
+    ("prism", "gt"),
+    ("prism", "seg"),
+    ("mitoem", "gt"),
+    ("mitoem", "seg"),
+    ("cremi_clefts", "gt"),
+    ("cremi_clefts", "seg"),
+    ("fluo", "gt"),
+    ("fluo", "seg"),
 ]
 
 

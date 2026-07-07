@@ -3,14 +3,17 @@
 One-shot script. Reads zarrs from /Users/vijay/work/test_vols/website_vols/,
 writes precomputed output suitable for static HTTPS hosting (GitHub Pages).
 """
+import os
 from pathlib import Path
 import numpy as np
 import zarr
 import cc3d
 from cloudvolume import CloudVolume
 
-SRC = Path("/Users/vijay/work/test_vols/website_vols")
-DST = Path("/Users/vijay/work/sparsity/sparsity.github.io/public/data")
+# Paths are overridable via env vars so the same script runs on the laptop
+# (defaults below) and on the lab box (WEBSITE_VOLS / WEBSITE_DATA set).
+SRC = Path(os.environ.get("WEBSITE_VOLS", "/Users/vijay/work/test_vols/website_vols"))
+DST = Path(os.environ.get("WEBSITE_DATA", "/Users/vijay/work/sparsity/sparsity.github.io/public/data"))
 
 # Each job: dict with required keys (src_zarr, name, dst_ds, dst_layer, layer_type)
 # and optional (crop_roi_from, mask_from, y_crop_start) passed to convert().
@@ -59,6 +62,29 @@ JOBS = [
         _j(f"synthetic/{batch}.zarr", "gt_affs",           "synthetic", f"{batch}/gt_affs",           "image"),
         _j(f"synthetic/{batch}.zarr", "pred_affs",         "synthetic", f"{batch}/pred_affs",         "image"),
     ]],
+    # --- Generalization datasets (staged in website_vols; best-scoring by
+    #     background-INCLUDED NVI, ties broken by the foreground metric) ---
+    # PRISM — 18-channel `enhanced` baked to RGB using the shuffle shader's
+    # per-channel ranges (seed=1); stored as a 3-channel jpeg image.
+    _j("prism.zarr", "raw", "prism", "raw", "image"),
+    _j("prism.zarr", "gt",       "prism", "gt",       "segmentation"),
+    _j("prism.zarr", "sparse",   "prism", "sparse",   "segmentation"),
+    _j("prism.zarr", "seg",      "prism", "seg",      "segmentation"),
+    # MitoEM-H — mitochondria instance segmentation
+    _j("mitoem.zarr", "raw",    "mitoem", "raw",    "image"),
+    _j("mitoem.zarr", "gt",     "mitoem", "gt",     "segmentation"),
+    _j("mitoem.zarr", "sparse", "mitoem", "sparse", "segmentation"),
+    _j("mitoem.zarr", "seg",    "mitoem", "seg",    "segmentation"),
+    # CREMI-C — synaptic cleft detection
+    _j("cremi_clefts.zarr", "raw",    "cremi_clefts", "raw",    "image"),
+    _j("cremi_clefts.zarr", "gt",     "cremi_clefts", "gt",     "segmentation"),
+    _j("cremi_clefts.zarr", "sparse", "cremi_clefts", "sparse", "segmentation"),
+    _j("cremi_clefts.zarr", "seg",    "cremi_clefts", "seg",    "segmentation"),
+    # Fluo-C2DL-Huh7 — cell segmentation
+    _j("fluo.zarr", "raw",    "fluo", "raw",    "image"),
+    _j("fluo.zarr", "gt",     "fluo", "gt",     "segmentation"),
+    _j("fluo.zarr", "sparse", "fluo", "sparse", "segmentation"),
+    _j("fluo.zarr", "seg",    "fluo", "seg",    "segmentation"),
 ]
 
 
@@ -177,9 +203,10 @@ def convert(src_zarr, name, dst_ds, dst_layer, layer_type,
         if data_tr.dtype in (np.float32, np.float64):
             data_tr = np.clip(data_tr, 0.0, 1.0)
             data_tr = (data_tr * 255.0).astype(np.uint8)
-        # uint8 single-channel -> jpeg (much smaller, static-HTTP-safe).
-        # Multi-channel uint8 (affs, LSDs) -> raw (jpeg only supports 1ch).
-        if data_tr.dtype == np.uint8 and num_channels == 1:
+        # uint8 -> jpeg (much smaller, static-HTTP-safe). Neuroglancer precomputed
+        # jpeg supports 1 channel (grayscale) or 3 channels (RGB). Everything else
+        # (multi-channel affs/LSDs with != 3 channels) -> raw.
+        if data_tr.dtype == np.uint8 and num_channels in (1, 3):
             encoding = "jpeg"
         else:
             encoding = "raw"
@@ -220,6 +247,11 @@ def convert(src_zarr, name, dst_ds, dst_layer, layer_type,
     # already provide format-level compression; raw float arrays are small.
     vol = CloudVolume(f"file://{dst_path}", info=info, compress=False, progress=False)
     vol.commit_info()
+    # Preserve an existing mesh manifest across rebuilds: create_new_info drops
+    # the "mesh" key, which would hide already-generated meshes from neuroglancer.
+    if layer_type == "segmentation" and (dst_path / "mesh").exists():
+        vol.info["mesh"] = "mesh"
+        vol.commit_info()
     if num_channels > 1:
         vol[:, :, :, :] = data_tr
     else:
@@ -285,12 +317,18 @@ def build_epi_sparse_sam_union():
 
 def main():
     for job in JOBS:
+        # Skip jobs whose source zarr isn't staged under SRC (lets the box
+        # build only the datasets present in its website_vols).
+        if not (SRC / job["src_zarr"]).exists():
+            print(f"SKIP {job['dst_ds']}/{job['dst_layer']} (missing {job['src_zarr']} under SRC)")
+            continue
         try:
             convert(**job)
         except Exception as e:
             print(f"FAILED {job}: {type(e).__name__}: {e}")
             raise
-    build_epi_sparse_sam_union()
+    if (SRC / "epi_crops").exists():
+        build_epi_sparse_sam_union()
 
 
 if __name__ == "__main__":
