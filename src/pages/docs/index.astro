@@ -1,0 +1,16 @@
+---
+import { getCollection } from 'astro:content';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import { DOCS } from '../../docs-nav';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const notice = (await getCollection('docs')).find((p) => p.data.notice)?.data.notice;
+---
+
+<DocsLayout title="Bootstrapper docs" notice={notice}>
+  <h1>Bootstrapper docs</h1>
+  <p>Bootstrapper makes dense 3D instance segmentations of microscopy volumes from sparse 2D labels. Start with the install guide, then run the CREMI tutorial.</p>
+  <ul class="docs-cards">
+    {DOCS.map((d) => <li><a href={`${base}/${d.path}`}><strong>{d.label}</strong><span>{d.summary}</span></a></li>)}
+  </ul>
+</DocsLayout>

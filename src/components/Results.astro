@@ -8,17 +8,17 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <h3>Dense 3D segmentations from sparse 2D annotations</h3>
 
-  <p>We validated the 2D&rarr;3D method across six publicly available datasets: HARRIS-15<a href="#ref-6" class="cite"><sup>6</sup></a>, FIB-25<a href="#ref-7" class="cite"><sup>7</sup></a>, CREMI-A/B/C<a href="#ref-8" class="cite"><sup>8</sup></a>, and EPI<a href="#ref-9" class="cite"><sup>9</sup></a>. Each dataset contains two dense ground-truth volumes. We systematically varied annotation density from single objects to dense labels.</p>
+  <p>We validated the 2D&rarr;3D method across six publicly available datasets: HARRIS-15<a href="#ref-6" class="cite"><sup>6</sup></a>, FIB-25<a href="#ref-7" class="cite"><sup>7</sup></a>, CREMI-A/B/C<a href="#ref-8" class="cite"><sup>8</sup></a>, and EPI<a href="#ref-9" class="cite"><sup>9</sup></a>. Each dataset contains two dense ground-truth volumes. We varied annotation density from single objects to dense labels.</p>
 
-  <p>Across all datasets, ten minutes of non-expert sparse annotation on a single section was sufficient to generate a dense 3D segmentation comparable in quality to one based on expert annotation requiring 1,000&times; more time.</p>
+  <p>Across all datasets, ten minutes of non-expert sparse annotation on a single section was sufficient to generate a dense 3D segmentation comparable in quality to one based on expert annotation requiring four orders of magnitude more time.</p>
 
   <div class="image-grid cols-2">
     <figure>
-      <img src={`${base}/fig1b_sparse_annos.png`} alt="Example sparse, non-expert annotations created in 30 minutes for HARRIS-15, partitioned into three 10-minute subsets." />
+      <img src={`${base}/fig1b_sparse_annos.png`} width="726" height="1192" loading="lazy" decoding="async" alt="Example sparse, non-expert annotations created in 30 minutes for HARRIS-15, partitioned into three 10-minute subsets." />
       <figcaption><strong>Fig. 1.</strong> Example sparse, non-expert annotations created in 30 minutes for HARRIS-15. Annotations were partitioned into three approximately 10-minute subsets to assess the effect of annotation time on segmentation quality.</figcaption>
     </figure>
     <figure>
-      <img src={`${base}/fig1c_comparison.png`} alt="Orthogonal views comparing 2D to 3D result with 10 minutes of sparse annotation, 3D Baseline result with all dense annotations, and ground-truth." />
+      <img src={`${base}/display/fig1c_comparison.webp`} width="1600" height="1314" loading="lazy" decoding="async" alt="Orthogonal views comparing 2D to 3D result with 10 minutes of sparse annotation, 3D Baseline result with all dense annotations, and ground-truth." />
       <figcaption><strong>Fig. 2.</strong> Orthogonal views comparing the 2D&rarr;3D result with 10 minutes of sparse annotation, the 3D Baseline result with all dense annotations, and ground-truth. Total time to segmentation includes human annotation time and machine time (training + inference + post-processing).</figcaption>
     </figure>
   </div>
@@ -27,19 +27,19 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <div class="image-grid cols-2 cols-2-equal">
     <figure>
-      <img src={`${base}/fig_distill_1a.png`} alt="Cost vs. quality on HARRIS-15. Δ-NVI sum relative to the 3D baseline plotted against estimated annotation time." />
+      <img src={`${base}/display/fig_distill_1a.webp`} width="1600" height="1181" loading="lazy" decoding="async" alt="Cost vs. quality on HARRIS-15. Δ-NVI sum relative to the 3D baseline plotted against estimated annotation time." />
       <figcaption><strong>Fig. 3.</strong> Cost vs. quality on HARRIS-15. &Delta;-NVI sum (Normalized VOI sum relative to the 3D baseline) plotted against estimated annotation time. All objects is 33,333&times; slower than 10 minutes 2D for 0.07 NVI sum improvement.</figcaption>
     </figure>
     <figure>
-      <img src={`${base}/fig_distill_1b.png`} alt="Improvement per additional order of magnitude of annotation time on HARRIS-15." />
+      <img src={`${base}/display/fig_distill_1b.webp`} width="1600" height="1184" loading="lazy" decoding="async" alt="Improvement per additional order of magnitude of annotation time on HARRIS-15." />
       <figcaption><strong>Fig. 4.</strong> Improvement per additional order of magnitude (OOM) of annotation time on HARRIS-15 relative to 10 min 2D. All objects requires 4.5 OOM of extra runtime over 10 minutes 2D for only 0.07 NVI sum improvement.</figcaption>
     </figure>
   </div>
 
-  <p>In practical terms, the 2D&rarr;3D bootstrap path approaches the quality of direct dense annotation while saving 1-6 months of calendar time and $25k-$125k of expert annotation labor.</p>
+  <p>The 2D&rarr;3D bootstrap path approaches the quality of direct dense annotation while saving 1-6 months of calendar time and $25k-$125k of expert annotation labor.</p>
 
   <figure>
-    <img src={`${base}/fig_distill_2.png`} alt="2D to 3D bootstrapping shortens the path to high-quality training data on HARRIS-15." />
+    <img src={`${base}/display/fig_distill_2.webp`} width="1600" height="782" loading="lazy" decoding="async" alt="2D to 3D bootstrapping shortens the path to high-quality training data on HARRIS-15." />
     <figcaption><strong>Fig. 5.</strong> 2D&rarr;3D bootstrapping shortens the path to high-quality training data on HARRIS-15. Three paths are compared. The Direct (upper bound) path annotates dense ground truth over 6 calendar months and trains a 3D model on it. The Direct (lower bound) path does the same over 1 calendar month. The Bootstrap path annotates sparsely (10 min 2D), trains a 2D&rarr;3D model, and generates pseudo-GT, then trains the same 3D model on that pseudo-GT. Bootstrapping saves 1&ndash;6 months of calendar time and $25k&ndash;$125k of human-annotator labor at $25/h.</figcaption>
   </figure>
 
@@ -51,7 +51,7 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
   </div>
 
   <figure>
-    <img src={`${base}/fig1d_voi_ablation.png`} alt="Deviation of normalized VOI sum across six datasets relative to the 3D baseline, plotted against annotation budget." />
+    <img src={`${base}/display/fig1d_voi_ablation.webp`} width="1600" height="1001" loading="lazy" decoding="async" alt="Deviation of normalized VOI sum across six datasets relative to the 3D baseline, plotted against annotation budget." />
     <figcaption><strong>Fig. 6.</strong> Deviation of normalized Variation of Information (VOI) sum across six datasets (total ground-truth path lengths in parentheses) relative to the 3D Baseline trained on all dense annotations. Approximate manual annotation times are marked for the HARRIS-15 dataset. Across all amounts and datasets, the VOI scores consistently approached those of the 3D baselines.</figcaption>
   </figure>
 
@@ -60,15 +60,15 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
   <p>We tested the 2D&rarr;3D method on five additional publicly available datasets spanning distinct imaging modalities, biological structures, and segmentation tasks. Across all five, the pipeline produced visually coherent 3D segmentations from minimal annotation effort.</p>
 
   <ul>
-    <li><strong>LICONN</strong><a href="#ref-10" class="cite"><sup>10</sup></a>: Expansion-microscopy volumes of mouse somatosensory cortex (effective voxel size ~10 &times; 10 &times; 20 nm, x &times; y &times; z). 10 minutes of SAM<a href="#ref-2" class="cite"><sup>2</sup></a>-assisted sparse annotation on a few sections for boundary segmentation.</li>
-    <li><strong>PRISM</strong><a href="#ref-11" class="cite"><sup>11</sup></a>: 18-channel light microscopy of mouse hippocampus (voxel size 35 &times; 35 &times; 80 nm, x &times; y &times; z). Ten sections of manual ground-truth annotation for boundary segmentation.</li>
-    <li><strong>CREMI-C</strong><a href="#ref-8" class="cite"><sup>8</sup></a>: Serial-section TEM of <em>Drosophila</em> neuropil through an axon tract (voxel size 4 &times; 4 &times; 40 nm, x &times; y &times; z). Two sections of manual annotation for synaptic cleft segmentation.</li>
-    <li><strong>MitoEM-H</strong><a href="#ref-12" class="cite"><sup>12</sup></a>: Multi-beam SEM of human cortex (voxel size 8 &times; 8 &times; 30 nm, x &times; y &times; z). Two sections of manual annotation for mitochondria instance segmentation.</li>
-    <li><strong>Fluo-C2DL-Huh7</strong><a href="#ref-13" class="cite"><sup>13</sup></a>: Live cell laser confocal imaging of Huh7 hepatocarcinoma cells (pixel size 0.65 &times; 0.65 &mu;m, x &times; y). Two frames of manual annotation for 2D+t cell segmentation.</li>
+    <li><strong>LICONN</strong><a href="#ref-10" class="cite"><sup>10</sup></a>: Expansion-microscopy volumes of mouse hippocampal CA1 (effective voxel size 18 &times; 18 &times; 24 nm, x &times; y &times; z). 10 minutes of SAM<a href="#ref-2" class="cite"><sup>2</sup></a>-assisted sparse annotation on a few sections for boundary segmentation.</li>
+    <li><strong>PRISM</strong><a href="#ref-11" class="cite"><sup>11</sup></a>: 18-channel light microscopy of mouse hippocampus (voxel size 35 &times; 35 &times; 80 nm, x &times; y &times; z). Ten sections of published labels for boundary segmentation.</li>
+    <li><strong>CREMI-C</strong><a href="#ref-8" class="cite"><sup>8</sup></a>: Serial-section TEM of <em>Drosophila</em> neuropil through an axon tract (voxel size 4 &times; 4 &times; 40 nm, x &times; y &times; z). Two sections of published annotation for synaptic cleft segmentation.</li>
+    <li><strong>MitoEM-H</strong><a href="#ref-12" class="cite"><sup>12</sup></a>: Multi-beam SEM of human cortex (voxel size 8 &times; 8 &times; 30 nm, x &times; y &times; z). Two sections of published annotation for mitochondria instance segmentation.</li>
+    <li><strong>Fluo-C2DL-Huh7</strong><a href="#ref-13" class="cite"><sup>13</sup></a>: Live-cell fluorescence time-lapse imaging of Huh7 hepatocarcinoma cells (pixel size 0.65 &times; 0.65 &mu;m, x &times; y). Two frames of published annotation for 2D+t cell segmentation.</li>
   </ul>
 
   <figure>
-    <img src={`${base}/fig4_generalization.png`} alt="The 2D to 3D method generalizes across imaging modalities and segmentation tasks. Five datasets with representative 2D images, published ground-truth, published 3D meshes, 2D to 3D segmentation results, and 2D to 3D meshes." />
+    <img src={`${base}/display/fig4_generalization.webp`} width="1600" height="1610" loading="lazy" decoding="async" alt="The 2D to 3D method generalizes across imaging modalities and segmentation tasks. Five datasets with representative 2D images, published ground-truth, published 3D meshes, 2D to 3D segmentation results, and 2D to 3D meshes." />
     <figcaption><strong>Fig. 7.</strong> The 2D&rarr;3D method generalizes across imaging modalities and segmentation tasks. Five datasets spanning distinct imaging modalities, biological targets, and annotation strategies. Each row displays: a representative 2D image (col 1), the published proofread, manual, or ground-truth segmentation (col 2), the published 3D mesh (col 3), our 2D&rarr;3D segmentation result (col 4), and our 2D&rarr;3D mesh (col 5). Datasets: <strong>a</strong> LICONN, <strong>b</strong> PRISM, <strong>c</strong> CREMI-C, <strong>d</strong> MitoEM-H, <strong>e</strong> Fluo-C2DL-Huh7.</figcaption>
 
   </figure>
@@ -110,11 +110,11 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
 
   <h3>Comparison with existing tools</h3>
 
-  <p>To contextualize the method against existing general-purpose segmentation tools, we compared it with Cellpose + uSegment3D<a href="#ref-5" class="cite"><sup>5</sup></a><sup>,</sup><a href="#ref-14" class="cite"><sup>14</sup></a> on the EPI dataset. Cellpose was applied to all 540 images of the EPI test volume, and uSegment3D was used to merge the 2D segmentations into a 3D consensus segmentation. For the 2D&rarr;3D method, we evaluated three levels of supervision: dense ground-truth labels, a single densely labelled section, and sparse SAM-generated labels on 3 images in 5 minutes of human time. The 2D&rarr;3D method with sparse SAM labels achieved a usable segmentation from 5 minutes of human effort, approximately two orders of magnitude less annotation for a modest decrease in segmentation accuracy.</p>
+  <p>To contextualize the method against existing general-purpose segmentation tools, we compared it with Cellpose + uSegment3D<a href="#ref-5" class="cite"><sup>5</sup></a><sup>,</sup><a href="#ref-14" class="cite"><sup>14</sup></a> on the EPI dataset. Cellpose was applied to all three orthogonal views of the EPI test volume, and uSegment3D was used to merge the 2D segmentations into a 3D consensus segmentation. For the 2D&rarr;3D method, we evaluated three levels of supervision: dense ground-truth labels, a single densely labeled section, and sparse SAM-generated labels on 3 images in 5 minutes of human time. The 2D&rarr;3D method with sparse SAM labels achieved a usable segmentation from 5 minutes of human effort, approximately two orders of magnitude less annotation for a modest decrease in segmentation accuracy.</p>
 
   <figure>
-    <img src={`${base}/fig_epi_comparison.png`} alt="Comparison of 2D to 3D segmentation with Cellpose + uSegment3D on the EPI dataset. Representative XY sections and 3D mesh renderings, plus quantitative comparison of labelled voxels/objects/images, annotation time, and normalized VOI." />
-    <figcaption><strong>Fig. 8.</strong> Comparison of 2D&rarr;3D segmentation with Cellpose + uSegment3D on the EPI dataset. <strong>a</strong>, Representative XY sections (top) and 3D mesh renderings (bottom) of the EPI test volume, comparing ground-truth labels with segmentations produced by different methods at varying levels of supervision. <strong>b</strong>, Quantitative comparison reporting the number of labelled voxels, labelled objects, labelled images, estimated human annotation time, and normalized VOI (sum) for each method.</figcaption>
+    <img src={`${base}/display/fig_epi_comparison.webp`} width="1600" height="1121" loading="lazy" decoding="async" alt="Comparison of 2D to 3D segmentation with Cellpose + uSegment3D on the EPI dataset. Representative XY sections and 3D mesh renderings, plus quantitative comparison of labeled voxels/objects/images, annotation time, and normalized VOI." />
+    <figcaption><strong>Fig. 8.</strong> Comparison of 2D&rarr;3D segmentation with Cellpose + uSegment3D on the EPI dataset. <strong>a</strong>, Representative XY sections (top) and 3D mesh renderings (bottom) of the EPI test volume, comparing ground-truth labels with segmentations produced by different methods at varying levels of supervision. <strong>b</strong>, Quantitative comparison reporting the number of labeled voxels, labeled objects, labeled images, estimated human annotation time, and normalized VOI (sum) for each method.</figcaption>
   </figure>
 
   <!-- Neuroglancer: EPI comparison (7-column layout with sub-rows in col 2) -->
@@ -124,16 +124,16 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
     </a>
   </div>
 
-  <h3>Bootstrapping reduces total reconstruction cost</h3>
+  <h3>Bootstrapping</h3>
 
   <p>Unproofread 2D&rarr;3D segmentations serve as pseudo ground-truth to bootstrap dedicated 3D segmentation models. We evaluated whether segmentations from different amounts of sparse training data could bootstrap subsequent 3D models without any manual proofreading. Across all six datasets, bootstrapped 3D models trained on 2D&rarr;3D pseudo ground-truth approached the quality of dense 3D baselines at all sparsity levels.</p>
 
   <figure>
-    <img src={`${base}/fig5c_bootstrapping.png`} alt="Deviation of the total number of split and merge errors to fix per skeleton path length across six datasets relative to the non-bootstrapped 3D baseline." />
+    <img src={`${base}/display/fig5c_bootstrapping.webp`} width="1600" height="1004" loading="lazy" decoding="async" alt="Deviation of the total number of split and merge errors to fix per skeleton path length across six datasets relative to the non-bootstrapped 3D baseline." />
     <figcaption><strong>Fig. 9.</strong> Deviation of the total number of split and merge errors to fix per skeleton path length (&mu;m<sup>&minus;1</sup>) across six datasets (total ground-truth path lengths in parentheses) relative to the non-bootstrapped 3D baseline. All values fall above zero, except for HARRIS-15 when there were 50 or more bootstrapped objects, where the 2D&rarr;3D method outperformed the non-bootstrapped baseline. This occurs because the manually annotated ground-truth covers only a cylindrical subregion in Volume 2, whereas the pseudo ground-truth segments the entire volume, providing more training labels.</figcaption>
   </figure>
 
-  <p>Pseudo ground-truth from 10 minutes of non-expert annotation on a single section yielded bootstrapped segmentations requiring only approximately 2-3 additional edits per micron (in HARRIS-15) compared to those from dense expert annotations of entire volumes (1,000&times; more annotation time). Sparser approaches increase the subsequent proofreading burden, but the reduction in upstream annotation yields an order-of-magnitude improvement in total reconstruction time.</p>
+  <p>Pseudo ground-truth from 10 minutes of non-expert annotation on a single section yielded bootstrapped segmentations requiring approximately 2.6 edits per micron (in HARRIS-15), compared with 1.8 for pseudo ground-truth from all objects (four orders of magnitude more annotation time). Sparser approaches increase the subsequent proofreading burden, but the reduction in upstream annotation yields an order-of-magnitude improvement in total reconstruction time.</p>
 
   <h3>Cost-benefit analysis</h3>
 
@@ -182,46 +182,40 @@ const dataHost = import.meta.env.DEV ? 'http%3A%2F%2Flocalhost%3A9091%2Fdata' : 
         <td align="center">0.3</td>
       </tr>
       <tr>
-        <td>Proofreading splits (0.1 min/edit)</td>
-        <td align="center">0.61</td>
-        <td align="center">0.67</td>
-        <td align="center">1.62</td>
-      </tr>
-      <tr>
-        <td>Proofreading merges (1 min/edit)</td>
+        <td>Proofreading (0.1 min/split + 1 min/merge)</td>
         <td align="center">7.1</td>
         <td align="center">7.9</td>
         <td align="center">8.8</td>
       </tr>
       <tr class="total-row">
         <td>Total (1 min/edit)</td>
-        <td align="right">1,008</td>
-        <td align="right">33.9</td>
-        <td align="right"><strong>10.7</strong></td>
+        <td align="right">1,007.4</td>
+        <td align="right">33.2</td>
+        <td align="right"><strong>9.1</strong></td>
       </tr>
       <tr>
-        <td>Proofreading merges (3 min/edit)</td>
+        <td>Proofreading (0.1 min/split + 3 min/merge)</td>
         <td align="center">19.2</td>
         <td align="center">21.5</td>
         <td align="center">23.2</td>
       </tr>
       <tr class="total-row">
         <td>Total (3 min/edit)</td>
-        <td align="right">1,020</td>
-        <td align="right">47.5</td>
-        <td align="right"><strong>25.1</strong></td>
+        <td align="right">1,019.5</td>
+        <td align="right">46.8</td>
+        <td align="right"><strong>23.5</strong></td>
       </tr>
       <tr>
-        <td>Proofreading merges (10 min/edit)</td>
+        <td>Proofreading (0.1 min/split + 10 min/merge)</td>
         <td align="center">61.7</td>
         <td align="center">68.7</td>
         <td align="center">73.6</td>
       </tr>
       <tr class="total-row">
         <td>Total (10 min/edit)</td>
-        <td align="right">1,062.6</td>
-        <td align="right">94.7</td>
-        <td align="right"><strong>75.5</strong></td>
+        <td align="right">1,062.0</td>
+        <td align="right">94.0</td>
+        <td align="right"><strong>73.9</strong></td>
       </tr>
     </tbody>
   </table>

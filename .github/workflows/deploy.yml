@@ -20,19 +20,47 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          path: site
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
-      - name: Install dependencies
-        run: npm ci
+          cache-dependency-path: site/package-lock.json
+      - name: Read pinned Bootstrapper commit
+        id: ref
+        working-directory: site
+        run: |
+          sha=$(node scripts/pinned-ref.mjs bootstrapper-ref.txt)
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+      - name: Checkout Bootstrapper at the pinned commit
+        uses: actions/checkout@v4
+        with:
+          repository: ucsdmanorlab/bootstrapper
+          ref: ${{ steps.ref.outputs.sha }}
+          path: bootstrapper
+          persist-credentials: false
+      - name: Verify Bootstrapper commit
+        run: node site/scripts/pinned-ref.mjs site/bootstrapper-ref.txt bootstrapper
+      - name: Copy site to a build workspace
+        run: |
+          cp -a site "$RUNNER_TEMP/site"
+          rm -rf "$RUNNER_TEMP/site/.git"
       - name: Build
-        run: npx astro build
+        working-directory: ${{ runner.temp }}/site
+        env:
+          REF: ${{ steps.ref.outputs.sha }}
+        run: |
+          npm ci
+          npm test
+          node scripts/import-docs.mjs "$GITHUB_WORKSPACE/bootstrapper" . --ref "$REF"
+          npx astro build
+          node scripts/check-dist.mjs dist
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ${{ runner.temp }}/site/dist
 
   deploy:
     environment:

@@ -1,0 +1,16 @@
+---
+import { getCollection } from 'astro:content';
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+import { REFERENCE } from '../../../docs-nav';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const notice = (await getCollection('docs')).find((p) => p.data.notice)?.data.notice;
+---
+
+<DocsLayout title="Reference" notice={notice}>
+  <h1>Reference</h1>
+  <p>These pages are lookup material, generated from the code. For a first run, use the CREMI tutorial.</p>
+  <ul class="docs-cards">
+    {REFERENCE.map((r) => <li><a href={`${base}/${r.path}`}><strong>{r.label}</strong><span>{r.summary}</span></a></li>)}
+  </ul>
+</DocsLayout>

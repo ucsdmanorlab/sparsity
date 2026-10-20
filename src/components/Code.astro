@@ -3,25 +3,41 @@ const base = import.meta.env.BASE_URL;
 ---
 
 <section id="code">
-  <h2>Get Started</h2>
+  <h2>Get started</h2>
 
-  <h3>Napari Plugin</h3>
-  <p>The <a href="https://github.com/ucsdmanorlab/napari-bootstrapper" target="_blank" rel="noopener">napari-bootstrapper</a> plugin provides an interactive graphical interface for applying the 2D&rarr;3D method to small volumes. Create sparse annotations directly in napari, generate dense volumetric segmentations, and perform basic proofreading and post-processing. Works seamlessly with foundation models and the napari plugin ecosystem.</p>
+  <h3>Napari plugin</h3>
+  <p>The <a href="https://github.com/ucsdmanorlab/napari-bootstrapper" target="_blank" rel="noopener">napari-bootstrapper</a> plugin provides an interactive graphical interface for applying the 2D&rarr;3D method to small volumes. Create sparse annotations directly in napari, generate dense volumetric segmentations, and perform basic proofreading and post-processing. Works with foundation models and the napari plugin ecosystem.</p>
 
   <pre><code>pip install napari-bootstrapper</code></pre>
 
   <figure class="no-frame no-invert">
-    <img src={`${base}/napari.gif`} alt="Napari bootstrapper plugin demonstration showing annotation, training, inference, and 3D segmentation output." />
+    <video id="napari-video" autoplay loop muted playsinline width="1092" height="614"
+           src={`${base}/napari.mp4`} poster={`${base}/posters/napari.webp`}
+           aria-label="Napari bootstrapper plugin demonstration showing annotation, training, inference, and 3D segmentation output."
+           style="width: 100%; height: auto; border-radius: 6px; display: block;">
+    </video>
+    <script is:inline>
+      const v = document.getElementById('napari-video');
+      const motion = matchMedia('(prefers-reduced-motion: reduce)');
+      v.autoplay = !motion.matches;
+      motion.addEventListener('change', () => {
+        v.autoplay = !motion.matches;
+        if (motion.matches) {
+          v.pause();
+          v.currentTime = 0;
+        } else {
+          v.play().catch(() => {});
+        }
+      });
+    </script>
     <figcaption>Napari-bootstrapper plugin: annotate, train, infer, and export dense 3D segmentations within a single GUI.</figcaption>
   </figure>
 
   <h3>Bootstrapper CLI</h3>
   <p>The complete framework is open-source. It includes modules, scripts, and a command line interface for all components of the workflow: data preparation, 2D&rarr;3D models, LSD models, training pipelines, blockwise parallel inference and post-processing, evaluation, and error identification. Designed to scale to large volumes using lightweight distributed algorithms that do not require high-performance computing clusters.</p>
 
-  <pre><code>pip install bootstrapper
-# or
-git clone https://github.com/ucsdmanorlab/bootstrapper.git
-cd bootstrapper &amp;&amp; pip install -e .</code></pre>
+  <pre><code>git clone https://github.com/ucsdmanorlab/bootstrapper.git
+cd bootstrapper &amp;&amp; uv sync --locked</code></pre>
 
   <h3>Links</h3>
   <ul>

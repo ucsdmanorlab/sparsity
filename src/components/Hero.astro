@@ -9,8 +9,7 @@ const base = import.meta.env.BASE_URL;
          Sizing: grow the video to fill the viewport minus space needed for title + authors.
          Video aspect ratio is 1920:900 = 2.1333. Cap height at 75vh; derive max-width so
          the natural aspect ratio keeps it from overflowing. -->
-    <video id="hero-video" autoplay loop muted playsinline preload="auto"
-           src={`${base}/header_light.mp4`}
+    <video id="hero-video" autoplay loop muted playsinline preload="auto" width="1920" height="900"
            data-src-dark={`${base}/header_dark.mp4`}
            data-src-light={`${base}/header_light.mp4`}
            style="width: 100%; max-width: min(1920px, calc(75vh * 2.1333)); height: auto; border-radius: 6px; display: block; margin: 0 auto;">
@@ -20,18 +19,24 @@ const base = import.meta.env.BASE_URL;
     (function () {
       const v = document.getElementById('hero-video');
       const html = document.documentElement;
+      const motion = matchMedia('(prefers-reduced-motion: reduce)');
+      v.autoplay = !motion.matches;
+      motion.addEventListener('change', () => {
+        v.autoplay = !motion.matches;
+        if (motion.matches) {
+          v.pause();
+          v.currentTime = 0;
+        } else {
+          v.play().catch(() => {});
+        }
+      });
       function apply() {
         const isLight = html.getAttribute('data-theme') === 'light';
         const target = isLight ? v.dataset.srcLight : v.dataset.srcDark;
-        if (v.src && v.src.endsWith(target)) { v.play().catch(() => {}); return; }
-        const t = v.currentTime || 0;
+        if (v.src.endsWith(target)) return;
+        const t = v.currentTime;
         v.src = target;
-        const resume = () => {
-          try { v.currentTime = t % (v.duration || 1); } catch (e) {}
-          v.play().catch(() => {});
-        };
-        if (v.readyState >= 1) resume();
-        else v.addEventListener('loadedmetadata', resume, { once: true });
+        v.addEventListener('loadedmetadata', () => { v.currentTime = t % v.duration; }, { once: true });
       }
       apply();
       new MutationObserver(apply).observe(html, { attributes: true, attributeFilter: ['data-theme'] });
@@ -62,6 +67,8 @@ const base = import.meta.env.BASE_URL;
   <div class="links">
     <a href="https://www.biorxiv.org/content/10.1101/2024.06.14.599135v3" target="_blank" rel="noopener">Paper</a>
     <a href="https://github.com/ucsdmanorlab/bootstrapper" target="_blank" rel="noopener">GitHub</a>
+    <a href={`${base}/docs/`}>Docs</a>
     <a href="https://github.com/ucsdmanorlab/napari-bootstrapper" target="_blank" rel="noopener">Napari Plugin</a>
+    <a href="https://github.com/ucsdmanorlab/bootstrapper_nm_capsule" target="_blank" rel="noopener">Reproduce the paper</a>
   </div>
 </header>

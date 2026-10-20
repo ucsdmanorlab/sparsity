@@ -1,0 +1,73 @@
+---
+import Layout from './Layout.astro';
+import { getCollection } from 'astro:content';
+import DocsNavList from '../components/DocsNavList.astro';
+import { pager, pageContents, type Heading } from '../docs-nav';
+
+interface Props {
+  title: string;
+  headings?: Heading[];
+  notice?: string;
+}
+
+const { title, headings = [], notice } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const toc = pageContents(headings);
+const here = Astro.url.pathname.replace(/\/?$/, '/').slice(base.length + 1);
+const hasRound2 = (await getCollection('docs')).some((p) => p.id === 'cremi/round2');
+const { prev, next } = pager(here, hasRound2);
+---
+
+<Layout title={`${title} | Bootstrapper docs`} description={`Bootstrapper documentation: ${title}`}>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="docs-header">
+    <a href={`${base}/`}>Sparsity</a>
+    <nav aria-label="Site">
+      <a href={`${base}/docs/`} aria-current={here === 'docs/' ? 'page' : 'location'}>Docs</a>
+      <a href="https://github.com/ucsdmanorlab/bootstrapper" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/ucsdmanorlab/napari-bootstrapper" target="_blank" rel="noopener">napari plugin</a>
+    </nav>
+  </header>
+  {notice && <p class="docs-notice">{notice}</p>}
+
+  <div class="page-layout docs-layout">
+    <aside class="sidebar">
+      <nav class="sidebar-nav" aria-label="Docs">
+        <h3>Docs</h3>
+        <DocsNavList />
+        {toc.length > 0 && <h3>On this page</h3>}
+        {toc.length > 0 && <DocsNavList contents={toc} />}
+      </nav>
+    </aside>
+
+    <main id="main" class="content docs-content">
+      <nav class="docs-mobile-menus" aria-label="Documentation navigation">
+        <details class="docs-mobile-nav">
+          <summary>Docs menu</summary>
+          <DocsNavList />
+        </details>
+        {toc.length > 0 && (
+          <details class="docs-mobile-nav">
+            <summary>On this page</summary>
+            <DocsNavList contents={toc} />
+          </details>
+        )}
+      </nav>
+      <slot />
+      {(prev || next) && (
+        <nav class="docs-pager" aria-label="Documentation pages">
+          {prev && <a rel="prev" href={`${base}/${prev.path}`}><span>Previous</span> {prev.label}</a>}
+          {next && <a rel="next" href={`${base}/${next.path}`}><span>Next</span> {next.label}</a>}
+        </nav>
+      )}
+    </main>
+  </div>
+</Layout>
+
+<script>
+  document.querySelectorAll('.docs-mobile-nav a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', () => {
+      link.closest<HTMLDetailsElement>('.docs-mobile-nav')!.open = false;
+    });
+  });
+</script>
