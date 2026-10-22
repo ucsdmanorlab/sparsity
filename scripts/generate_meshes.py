@@ -13,7 +13,7 @@ import igneous.task_creation as tc
 
 DST = Path(os.environ.get("WEBSITE_DATA", "/Users/vijay/work/sparsity/sparsity.github.io/public/data"))
 
-# (dataset, layer) — only include volumes where 3D meshes are meaningful
+# (dataset, layer): only include volumes where 3D meshes are meaningful
 # (i.e. skip single-section or 3-section sparse labels).
 LAYERS = [
     ("harris_15", "3d_baseline"),
@@ -45,9 +45,9 @@ LAYERS = [
 
 def mesh_one(dataset, layer):
     layer_path = f"file://{DST / dataset / layer}"
-    print(f"[{dataset}/{layer}]  meshing (unsharded legacy precomputed) → {layer_path}")
+    print(f"[{dataset}/{layer}]  meshing (unsharded legacy precomputed) -> {layer_path}")
     # Only the legacy unsharded precomputed format (`<segid>:<lod>` manifest
-    # + `<segid>:<lod>:<bbox>` raw-triangle fragments) actually renders on
+    # + `<segid>:<lod>:<bbox>` raw-triangle fragments) renders on
     # neuroglancer-demo.appspot.com. Sharded / multilod / draco variants
     # have subtle incompatibilities with the demo build and silently fail.
     # Accept the ~10x larger on-disk size as the price of compatibility.
@@ -58,7 +58,7 @@ def mesh_one(dataset, layer):
             shape=(256, 256, 256),
             simplification=True,
             max_simplification_error=40,
-            # Skip meshes for segments <100 voxels — these are tiny noise
+            # Skip meshes for segments <100 voxels: these are tiny noise
             # fragments that don't render usefully in 3D and bloat disk.
             dust_threshold=100,
             mesh_dir="mesh",

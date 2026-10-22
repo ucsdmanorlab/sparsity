@@ -2,13 +2,11 @@
 ---
 
 <section id="takeaways">
-  <h2>Takeaways</h2>
+  <h2>Discussion</h2>
 
-  <ul>
-    <li>We present a general-purpose method for generating dense 3D segmentations from sparse 2D annotations. It works across diverse imaging modalities, biological targets, and segmentation tasks. No domain-specific pretraining or high-performance computing is required.</li>
-    <li>Specialist 3D models trained on dense ground-truth achieve the highest accuracy within their domain. This method addresses the bottleneck that precedes them: generating the dense training data needed for both model development and evaluation.</li>
-    <li>In our experiments, bootstrapped 3D models trained on unproofread pseudo ground-truth approached the quality of models trained on dense expert annotations, with orders-of-magnitude less human effort.</li>
-  </ul>
+  <p>We present a general-purpose method for generating dense 3D segmentations from sparse 2D annotations. It works across diverse imaging modalities, biological targets, and segmentation tasks, and requires no domain-specific pretraining or high-performance computing.</p>
+
+  <p>Specialist 3D models trained on dense ground-truth achieve the highest accuracy within their domain. This method addresses the bottleneck that precedes them: generating the dense training data needed for both model development and evaluation. In our experiments, bootstrapped 3D models trained on unproofread pseudo ground-truth approached the quality of models trained on dense expert annotations, with orders-of-magnitude less human effort.</p>
 
   <h3>Foundation models</h3>
 
@@ -16,7 +14,5 @@
 
   <h3>Toward autonomous bootstrapping</h3>
 
-  <p>The bootstrapper CLI is fully scriptable. AI agents can independently run the entire bootstrapping loop: selecting annotations, training models, running inference, monitoring LSD and segmentation inconsistencies, and iterating.</p>
-
-  <p>Dense voxel ground-truth remains the gold standard for 3D microscopy segmentation. This method reduces the total cost of generating training data.</p>
+  <p>The bootstrapper CLI is fully scriptable. AI agents can independently run the bootstrapping loop: selecting annotations, training models, running inference, monitoring LSD and segmentation inconsistencies, and iterating.</p>
 </section>

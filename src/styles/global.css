@@ -522,13 +522,12 @@ figure.no-frame img {
 }
 
 /*
- * In dark mode, invert grayscale components (black text/lines → white)
+ * In dark mode, invert grayscale components (black text/lines -> white)
  * while preserving saturated colors (segmentation panels). The
  * `invert(1) hue-rotate(180deg)` trick works on pure math:
- *   - Black (0,0,0) → (1,1,1) white, hue-rotate a nop on grayscale
- *   - Pure red (1,0,0) → cyan (0,1,1) → rotate 180° → red (1,0,0)
+ *   - Black (0,0,0) -> (1,1,1) white, hue-rotate a nop on grayscale
+ *   - Pure red (1,0,0) -> cyan (0,1,1) -> rotate 180° -> red (1,0,0)
  *   - Transparent alpha is untouched by filter ops
- * So text gets readable, colored panels keep their meaning.
  *
  * In light mode, we show the original PNG unfiltered.
  */

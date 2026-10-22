@@ -64,7 +64,7 @@ test('without the optional round 2 page, CREMI links straight to Your data', () 
   }
 });
 
-test('pager links carry the destination label', () => {
+test('pager links have the destination label', () => {
   const { prev, next } = pager('docs/reference/config/', true);
   assert.equal(prev.label, 'Commands');
   assert.equal(next.label, 'Input formats');

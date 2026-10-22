@@ -34,13 +34,13 @@ HARRIS_SEG_CROP_MASK = {**HARRIS_CROP_MASK, "relabel_cc": True}
 EPI_YCROP = {"y_crop_start": 95}
 
 JOBS = [
-    # HARRIS-15 (voljo.zarr -> harris_15) — cropped to dense_labels ROI
+    # HARRIS-15 (voljo.zarr -> harris_15), cropped to dense_labels ROI
     _j("voljo.zarr", "raw",              "harris_15", "raw",           "image",        **HARRIS_CROP),
     _j("voljo.zarr", "3d_dense",         "harris_15", "3d_baseline",   "segmentation", **HARRIS_SEG_CROP_MASK),
     _j("voljo.zarr", "dense_labels",     "harris_15", "gt_labels",     "segmentation", **HARRIS_SEG_CROP),
     _j("voljo.zarr", "sparse_2d_labels", "harris_15", "sparse_labels", "segmentation", **HARRIS_SEG_CROP),
     _j("voljo.zarr", "10min_paint_2d",   "harris_15", "segmentation",  "segmentation", **HARRIS_SEG_CROP_MASK),
-    # EPI — drop first 95 y voxels on every array
+    # EPI: drop first 95 y voxels on every array
     _j("epi.zarr", "raw",                "epi", "raw",                "image",        **EPI_YCROP),
     _j("epi.zarr", "labels_dense",       "epi", "gt",                 "segmentation", **EPI_YCROP),
     _j("epi.zarr", "labels_dense1z",     "epi", "gt_1section",        "segmentation", **EPI_YCROP),
@@ -54,7 +54,7 @@ JOBS = [
     _j("liconn.zarr", "labels_relabeled", "liconn", "gt",     "segmentation"),
     _j("liconn.zarr", "sparse_labels",    "liconn", "sparse", "segmentation"),
     _j("liconn.zarr", "seg",              "liconn", "seg",    "segmentation"),
-    # Synthetic — three batches (60001 / 60004 / 60007)
+    # Synthetic: three batches (60001 / 60004 / 60007)
     *[j for batch in ("batch_60001", "batch_60004", "batch_60007") for j in [
         _j(f"synthetic/{batch}.zarr", "labels",            "synthetic", f"{batch}/labels",            "segmentation"),
         _j(f"synthetic/{batch}.zarr", "obfuscated_labels", "synthetic", f"{batch}/obfuscated_labels", "segmentation"),
@@ -62,25 +62,25 @@ JOBS = [
         _j(f"synthetic/{batch}.zarr", "gt_affs",           "synthetic", f"{batch}/gt_affs",           "image"),
         _j(f"synthetic/{batch}.zarr", "pred_affs",         "synthetic", f"{batch}/pred_affs",         "image"),
     ]],
-    # --- Generalization datasets (staged in website_vols; best-scoring by
-    #     background-INCLUDED NVI, ties broken by the foreground metric) ---
-    # PRISM — 18-channel `enhanced` baked to RGB using the shuffle shader's
+    # Generalization datasets (staged in website_vols; best-scoring by
+    # background-INCLUDED NVI, ties broken by the foreground metric).
+    # PRISM: 18-channel `enhanced` baked to RGB using the shuffle shader's
     # per-channel ranges (seed=1); stored as a 3-channel jpeg image.
     _j("prism.zarr", "raw", "prism", "raw", "image"),
     _j("prism.zarr", "gt",       "prism", "gt",       "segmentation"),
     _j("prism.zarr", "sparse",   "prism", "sparse",   "segmentation"),
     _j("prism.zarr", "seg",      "prism", "seg",      "segmentation"),
-    # MitoEM-H — mitochondria instance segmentation
+    # MitoEM-H: mitochondria instance segmentation
     _j("mitoem.zarr", "raw",    "mitoem", "raw",    "image"),
     _j("mitoem.zarr", "gt",     "mitoem", "gt",     "segmentation"),
     _j("mitoem.zarr", "sparse", "mitoem", "sparse", "segmentation"),
     _j("mitoem.zarr", "seg",    "mitoem", "seg",    "segmentation"),
-    # CREMI-C — synaptic cleft detection
+    # CREMI-C: synaptic cleft detection
     _j("cremi_clefts.zarr", "raw",    "cremi_clefts", "raw",    "image"),
     _j("cremi_clefts.zarr", "gt",     "cremi_clefts", "gt",     "segmentation"),
     _j("cremi_clefts.zarr", "sparse", "cremi_clefts", "sparse", "segmentation"),
     _j("cremi_clefts.zarr", "seg",    "cremi_clefts", "seg",    "segmentation"),
-    # Fluo-C2DL-Huh7 — cell segmentation
+    # Fluo-C2DL-Huh7: cell segmentation
     _j("fluo.zarr", "raw",    "fluo", "raw",    "image"),
     _j("fluo.zarr", "gt",     "fluo", "gt",     "segmentation"),
     _j("fluo.zarr", "sparse", "fluo", "sparse", "segmentation"),

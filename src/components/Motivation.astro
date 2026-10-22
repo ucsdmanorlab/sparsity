@@ -8,7 +8,7 @@
 
   <p>Sometimes they work reasonably well, especially when the data resembles what the model was trained on. Such a model can likely be fine-tuned. But often the data differs enough in imaging modality, tissue type, resolution, or staining that off-the-shelf models produce unusable results.</p>
 
-  <p>Segmentation foundation models (SAM<a href="#ref-2" class="cite"><sup>2</sup></a>, microSAM<a href="#ref-3" class="cite"><sup>3</sup></a>, CellSAM<a href="#ref-4" class="cite"><sup>4</sup></a>, Cellpose<a href="#ref-5" class="cite"><sup>5</sup></a>, etc.) can help in 2D, but they produce sparse segmentations, lack 3D consistency, and frequently miss the specific structures of interest. Generalist models tend to fail on the features that make a dataset scientifically interesting.</p>
+  <p>Segmentation foundation models (SAM<a href="#ref-2" class="cite"><sup>2</sup></a>, microSAM<a href="#ref-3" class="cite"><sup>3</sup></a>, CellSAM<a href="#ref-4" class="cite"><sup>4</sup></a>, Cellpose<a href="#ref-5" class="cite"><sup>5</sup></a>, etc.) can help in 2D, but they produce sparse segmentations, lack 3D consistency, and frequently miss the specific structures that make a dataset scientifically interesting.</p>
 
   <p>This leads to the same bottleneck: <strong>manual annotation of objects of interest to generate training data.</strong> Dense 3D annotation of even a small volume can take hundreds to thousands of expert hours. For example, dense annotation of hippocampal neuropil in a 180 &mu;m&sup3; EM volume required approximately 5,000 hours of expert effort <a href="#ref-6" class="cite"><sup>6</sup></a>.</p>
 

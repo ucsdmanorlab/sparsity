@@ -1,5 +1,5 @@
 """Convert unsharded meshes (from generate_meshes.py) into sharded
-multi-resolution Draco-compressed meshes — the Seung Lab standard for
+multi-resolution Draco-compressed meshes, the Seung Lab standard for
 large datasets served over static HTTP.
 
 For each layer:
@@ -47,7 +47,7 @@ LAYERS = [
 def shard_one(dataset, layer):
     layer_path = f"file://{DST / dataset / layer}"
     mesh_dir = DST / dataset / layer / "mesh"
-    print(f"[{dataset}/{layer}] shard + multires + draco → {layer_path}")
+    print(f"[{dataset}/{layer}] shard + multires + draco -> {layer_path}")
 
     # Sharded multi-resolution mesh generation.
     # - draco_compression_level=7: max lossy compression, standard for Pages.
@@ -73,8 +73,8 @@ def shard_one(dataset, layer):
             if f.is_file() and ":" in f.name:
                 f.unlink()
                 removed += 1
-        # spatial index fragments are directories; leave them — small and
-        # are consumed by any future re-sharding.
+        # spatial index fragments are directories; leave them (they are small
+        # and are consumed by any future re-sharding).
         print(f"    removed {removed} unsharded fragment files")
 
 
