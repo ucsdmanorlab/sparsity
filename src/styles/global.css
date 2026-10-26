@@ -51,6 +51,12 @@
   background: var(--color-accent-light);
 }
 
+/* An image drawn in two versions: dark-only shows on the dark theme, light-only on the light theme. */
+:root:not([data-theme="light"]) .light-only,
+[data-theme="light"] .dark-only {
+  display: none;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -160,6 +166,14 @@ section {
 
 section:last-of-type {
   border-bottom: none;
+}
+
+.section-brand {
+  display: inline-block;
+}
+
+.section-brand img {
+  display: block;
 }
 
 /* Typography */
@@ -770,11 +784,23 @@ tr.total-row td {
   font-weight: 400;
 }
 
-.docs-header a[aria-current] {
+.docs-header .docs-brand {
+  margin-right: 8px;
+  font-size: 18px;
   color: var(--color-text);
-  font-weight: 600;
-  text-decoration: underline 2px var(--color-accent);
-  text-underline-offset: 6px;
+}
+
+/* The wordmark is 16 pixels tall with its baseline 4 pixels up, so at 2x it drops 8px to sit on the text baseline. */
+.docs-brand img {
+  vertical-align: -8px;
+}
+
+.docs-brand:hover {
+  text-decoration: none;
+}
+
+.docs-brand:hover span {
+  text-decoration: underline;
 }
 
 .docs-header a:focus-visible {

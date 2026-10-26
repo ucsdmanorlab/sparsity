@@ -21,9 +21,13 @@ const { prev, next } = pager(here, hasRound2);
 <Layout title={`${title} | Bootstrapper docs`} description={`Bootstrapper documentation: ${title}`}>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="docs-header">
-    <a href={`${base}/`}>Sparsity</a>
+    <a class="docs-brand" href={`${base}/docs/`} aria-current={here === 'docs/' ? 'page' : 'location'}>
+      <img class="light-only" src={`${base}/logos/bootstrapper.svg`} alt="Bootstrapper" width="168" height="32" />
+      <img class="dark-only" src={`${base}/logos/bootstrapper-dark.svg`} alt="Bootstrapper" width="168" height="32" />
+      <span>docs</span>
+    </a>
     <nav aria-label="Site">
-      <a href={`${base}/docs/`} aria-current={here === 'docs/' ? 'page' : 'location'}>Docs</a>
+      <a href={`${base}/`}>Sparsity</a>
       <a href="https://github.com/ucsdmanorlab/bootstrapper" target="_blank" rel="noopener">GitHub</a>
       <a href="https://github.com/ucsdmanorlab/napari-bootstrapper" target="_blank" rel="noopener">napari plugin</a>
     </nav>

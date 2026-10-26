@@ -4,6 +4,10 @@ const base = import.meta.env.BASE_URL;
 
 <section id="code">
   <h2>Get started</h2>
+  <a class="section-brand" href="https://github.com/ucsdmanorlab/bootstrapper" target="_blank" rel="noopener">
+    <img class="light-only" src={`${base}/logos/bootstrapper.svg`} alt="Bootstrapper on GitHub" width="168" height="32" loading="lazy" />
+    <img class="dark-only" src={`${base}/logos/bootstrapper-dark.svg`} alt="Bootstrapper on GitHub" width="168" height="32" loading="lazy" />
+  </a>
 
   <h3>Napari plugin</h3>
   <p>The <a href="https://github.com/ucsdmanorlab/napari-bootstrapper" target="_blank" rel="noopener">napari-bootstrapper</a> plugin provides an interactive graphical interface for applying the 2D&rarr;3D method to small volumes. Create sparse annotations directly in napari, generate dense volumetric segmentations, and perform basic proofreading and post-processing. Works with foundation models and the napari plugin ecosystem.</p>
@@ -11,7 +15,7 @@ const base = import.meta.env.BASE_URL;
   <pre><code>pip install napari-bootstrapper</code></pre>
 
   <figure class="no-frame no-invert">
-    <video id="napari-video" autoplay loop muted playsinline width="1092" height="614"
+    <video id="napari-video" autoplay loop muted playsinline width="1920" height="1080"
            src={`${base}/napari.mp4`} poster={`${base}/posters/napari.webp`}
            aria-label="Napari bootstrapper plugin demonstration showing annotation, training, inference, and 3D segmentation output."
            style="width: 100%; height: auto; border-radius: 6px; display: block;">
@@ -30,7 +34,7 @@ const base = import.meta.env.BASE_URL;
         }
       });
     </script>
-    <figcaption>Napari-bootstrapper plugin: annotate, train, infer, and export dense 3D segmentations within a single GUI.</figcaption>
+    <figcaption>napari-bootstrapper on CREMI C: labels on one section, a 2D model, the pretrained 3D model and two proofreading edits. Labelling and training are shown as time-lapses.</figcaption>
   </figure>
 
   <h3>Bootstrapper CLI</h3>
